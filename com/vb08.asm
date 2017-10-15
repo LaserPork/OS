@@ -81,3 +81,11 @@ key3 db 01h, 00h, 08h, 0bh, 0ch, 07h, 0ah, 05h, 02h, 09h, 06h, 03h, 04h, 00h
 
 code	ends
 	end begin
+	
+	; sysman 
+	; turbodebuger
+	
+	;
+	;
+	;
+	
