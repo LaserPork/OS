@@ -2,18 +2,28 @@
 #include "registers.h"
 
 void printRegisters(registers* reg){
-    printf("%x\n",reg->eax);
-    printf("%x\n",reg->ebx);
-    printf("%x\n",reg->ecx);
-    printf("%x\n",reg->edx);
+    printf("[    E_X    ]\n");
+    printf("[ _X ]       \n");
+    printf("L  H         \n");
+    int i=0;
+    while (i < sizeof(registers))
+    {
+        printf("%02X ", *((byte *)reg+i));
+        i++;
+        if(i%4 == 0){
+            printf("\n");
+        }else if(i%2 == 0){
+            printf(" ");
+        }
+    }
+
 }
 
 void initRegisters(registers* reg){
-    reg->eax = 0;
-    reg->al = 1;
-    reg->ah = 1;
-    reg->ax = 1;
-    reg->ebx = 0;
-    reg->ecx = 0;
-    reg->edx = 0;
+    reg->eax = 0xFFFFFFFF;
+    reg->ebx = 0xFFFFFFFF;
+    reg->ecx = 0xFFFFFFFF;
+    reg->edx = 0xFFFFFFFF;
+    reg->al = 0x10;
+    reg->bx = 0xAAAA;
 }

@@ -1,28 +1,28 @@
 #include <stdint.h>
 #ifndef registers_h
 #define registers_h
-typedef uint8_t quarterRegister;
+typedef uint8_t byte;
 typedef uint16_t halfRegister;
 typedef uint32_t wholeRegister;
 
 typedef struct {
     union {
-        struct{quarterRegister al;quarterRegister ah;};
+        struct{byte al;byte ah;};
         halfRegister ax;
         wholeRegister eax;
     };
     union {
-        struct{quarterRegister bl;quarterRegister bh;};
+        struct{byte bl;byte bh;};
         halfRegister bx;
         wholeRegister ebx;
     };
     union {
-        struct{quarterRegister cl;quarterRegister ch;};
+        struct{byte cl;byte ch;};
         halfRegister cx;
         wholeRegister ecx;
     };
     union {
-        struct{quarterRegister dl;quarterRegister dh;};
+        struct{byte dl;byte dh;};
         halfRegister dx;
         wholeRegister edx;
     };
