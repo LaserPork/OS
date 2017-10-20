@@ -25,5 +25,5 @@ void initRegisters(registers* reg){
     reg->ecx = 0xFFFFFFFF;
     reg->edx = 0xFFFFFFFF;
     reg->al = 0x10;
-    reg->bx = 0xAAAA;
+    reg->bx = 0xABCD;
 }

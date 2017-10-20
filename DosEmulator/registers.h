@@ -2,8 +2,8 @@
 #ifndef registers_h
 #define registers_h
 typedef uint8_t byte;
-typedef uint16_t halfRegister;
-typedef uint32_t wholeRegister;
+typedef uint16_t halfRegister, doubleByte;
+typedef uint32_t wholeRegister, quadByte;
 
 typedef struct {
     union {
