@@ -5,6 +5,7 @@ void printMemory(byte *memory, int memSize) {
     printf("%d\n",0x100);
     printf("MEMORY DUMP: \n");
     for (i = 0; i < memSize; i++) {
-        printf("%x", memory[i]);
+        printf("%02X", memory[i]);
     }
+    printf("\n");
 }

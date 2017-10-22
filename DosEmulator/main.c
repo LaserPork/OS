@@ -4,6 +4,22 @@
 #include "memory.h"
 #include <math.h>
 
+int parse(byte *memory, int memSize){
+    int i = 0;
+    while(i < memSize){
+        if(memory[i] == 0x66 || memory[i] ==  0x67 || memory[i] == 0x26){
+            printf("%02x ", memory[i]);
+            i++;
+        }
+        switch (memory[i]){
+            case 0xb8: printf("%02x ", memory[i]); i++; break;
+        }
+        printf("%02x ", memory[i]);
+        i++;
+        printf("%02x\n", memory[i]);
+        i++;
+    }
+}
 int loadFile(){
     FILE *filePointer;
     char *filename = "VB08.COM";
@@ -26,6 +42,7 @@ int loadFile(){
         memory[memSize++] = (byte) c;
     }
     printMemory(memory, memSize);
+    parse(memory, memSize);
 }
 
 

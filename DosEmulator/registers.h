@@ -5,7 +5,9 @@ typedef uint8_t byte;
 typedef uint16_t halfRegister, doubleByte;
 typedef uint32_t wholeRegister, quadByte;
 
+
 typedef struct {
+    //GENERAL REGISTERS --- celych 32 bitu snad nikndy nebudeme potrebovat -> pouyivat jen AX ne EAX
     union {
         struct{byte al;byte ah;};
         halfRegister ax;
@@ -26,6 +28,18 @@ typedef struct {
         halfRegister dx;
         wholeRegister edx;
     };
+    //SEGMENT REGISTERS
+    halfRegister cs; //code segment
+    halfRegister ds; //data segment
+    halfRegister ss; //stack segment
+    halfRegister es; //extra segment
+    //INDEX REGISTERS
+    halfRegister di; //destination index
+    halfRegister si; //stack index snad nebudeme zasobnik potrebovat
+    //POINTERS
+    halfRegister sp; //stack pointer snad nebudeme zasobnik potrebovat
+    halfRegister bp; //base pointer
+    halfRegister ip; //instruciton pointer
 } registers;
 
 void printRegisters(registers* reg);

@@ -155,6 +155,8 @@ int main(int argc, char **argv)
     {
 		memory[memPoi++] = (byte) c;
     }
+    
+    
 	
 	ret = run(memory);							// hlavní smyčka
 		

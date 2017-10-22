@@ -1,7 +1,7 @@
 #ifndef CPU_H
 #define CPU_H
 
-#define DEBUG_MODE 0							// prezentační mód
+#define DEBUG_MODE 1							// prezentační mód
 #define REG_COUNT 16							// počet dostuponých registrů
 #define HEADER_SIZE 0x100 					// velikost hlavicky v pameni ptogramu
 #define SEGMENT_SIZE 65536				// velikost rezervované paměti
