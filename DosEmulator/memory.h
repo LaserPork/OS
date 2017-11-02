@@ -31,6 +31,33 @@
 #define jump 0xEB
 #define increment 0xFF
 
+#define LOGGER 1
+
+int execAddR8toRM8(byte *memory,registers* reg);
+int execAdd(byte *memory,registers* reg);
+int execXor(byte *memory,registers* reg);
+int execIncrementEDX(byte *memory,registers* reg);
+int execIncrementEBX(byte *memory,registers* reg);
+int execDecrementECX(byte *memory,registers* reg);
+int execJumpNotEqual(byte *memory,registers* reg);
+int execJumpNotParity(byte *memory,registers* reg);
+int execCompare(byte *memory,registers* reg);
+int execMoveToR8(byte *memory,registers* reg);
+int execMoveFromSegment(byte *memory,registers* reg);
+int execMoveToSegment(byte *memory,registers* reg);
+int execMoveAH(byte *memory,registers* reg);
+int execMoveAX(byte *memory,registers* reg);
+int execMoveDX(byte *memory,registers* reg);
+int execMoveBX(byte *memory,registers* reg);
+int execMoveSI(byte *memory,registers* reg);
+int execMoveDI(byte *memory,registers* reg);
+int execMoveIMM16toRM16(byte *memory,registers* reg);
+int execInterrupt(byte *memory,registers* reg);
+int execJump(byte *memory,registers* reg);
+int execIncrement(byte *memory,registers* reg);
+
+
+
 void printMemory(byte* memory, int memSize);
 
 

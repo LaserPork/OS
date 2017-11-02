@@ -26,4 +26,5 @@ void initRegisters(registers* reg){
     reg->edx = 0xFFFFFFFF;
     reg->al = 0x10;
     reg->bx = 0xABCD;
+    reg->ip = 0;
 }

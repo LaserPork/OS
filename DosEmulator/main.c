@@ -4,51 +4,47 @@
 #include "memory.h"
 #include <math.h>
 
-int parse(byte *memory, int memSize){
-    int i = 0;
-    while(i < memSize){
-        if(memory[i] == segmentOverride || memory[i] ==  operandOverride || memory[i] == addressOverride){
-            printf("%02x ", memory[i]);
-            i++;
+int executeInstructions(registers* dosRegisters, byte *memory){
+    while(dosRegisters->ip < 166){
+        if(memory[dosRegisters->ip ] == segmentOverride || memory[dosRegisters->ip ] ==  operandOverride || memory[dosRegisters->ip ] == addressOverride){
+            printf("%02x ", memory[dosRegisters->ip ]);
+            dosRegisters->ip ++;
         }
-        switch (memory[i]){
-            case addR8toRM8:;
-            case add:;
-            case xor:;
-            case incrementEDX:;
-            case incrementEBX:;
-            case decrementECX:;
-            case jumpNotEqual:;
-            case jumpNotParity:;
-            case compare:;
-            case moveToR8:;
-            case moveFromSegment:;
-            case moveToSegment:;
-            case moveAH:;
-            case moveAX:;
-            case moveDX:;
-            case moveBX:;
-            case moveSI:;
-            case moveDI:;
-            case moveIMM16toRM16:;
-            case interrupt:;
-            case jump:;
-            case increment:;
-            default:printf("This virtualization doesn't use opcode %02x ", memory[i]);
+        switch (memory[dosRegisters->ip]){
+            case addR8toRM8:        execAddR8toRM8(memory,dosRegisters);break;
+            case add:               execAdd(memory,dosRegisters);break;
+            case xor:               execXor(memory,dosRegisters);break;
+            case incrementEDX:      execIncrementEDX(memory,dosRegisters);break;
+            case incrementEBX:      execIncrementEBX(memory,dosRegisters);break;
+            case decrementECX:      execDecrementECX(memory,dosRegisters);break;
+            case jumpNotEqual:      execJumpNotEqual(memory,dosRegisters);break;
+            case jumpNotParity:     execJumpNotParity(memory,dosRegisters);break;
+            case compare:           execCompare(memory,dosRegisters);break;
+            case moveToR8:          execMoveToR8(memory,dosRegisters);break;
+            case moveFromSegment:   execMoveFromSegment(memory,dosRegisters);break;
+            case moveToSegment:     execMoveToSegment(memory,dosRegisters);break;
+            case moveAH:            execMoveAH(memory,dosRegisters);break;
+            case moveAX:            execMoveAX(memory,dosRegisters);break;
+            case moveDX:            execMoveDX(memory,dosRegisters);break;
+            case moveBX:            execMoveBX(memory,dosRegisters);break;
+            case moveSI:            execMoveSI(memory,dosRegisters);break;
+            case moveDI:            execMoveDI(memory,dosRegisters);break;
+            case moveIMM16toRM16:   execMoveIMM16toRM16(memory,dosRegisters);break;
+            case interrupt:         execInterrupt(memory,dosRegisters);break;
+            case jump:              execJump(memory,dosRegisters);break;
+            case increment:         execIncrement(memory,dosRegisters);break;
+            default:printf("This virtualization doesn't use opcode %02x \n", memory[dosRegisters->ip]);dosRegisters->ip++;break;
         }
-        printf("%02x ", memory[i]);
-        i++;
-        printf("%02x\n", memory[i]);
-        i++;
+
     }
 }
-int loadFile(){
+int loadFileintoMemory(byte *memory){
     FILE *filePointer;
     char *filename = "VB08.COM";
     filePointer = fopen(filename,"rb");
-    byte *memory;
+
     int c,memSize = 0;
-    memory = malloc((int)pow(2,10) * sizeof(byte));
+
     if (memory == NULL)
     {
         fprintf(stderr, "Virtual memory could not be allocated.\n");
@@ -64,13 +60,16 @@ int loadFile(){
         memory[memSize++] = (byte) c;
     }
     printMemory(memory, memSize);
-    parse(memory, memSize);
 }
 
 
 int main() {
-    registers dosRegisters;
-    initRegisters(&dosRegisters);
-    loadFile();
+    registers *dosRegisters;
+    byte *memory;
+    dosRegisters = malloc(sizeof(registers));
+    memory = malloc((int)pow(2,10) * sizeof(byte));
+    initRegisters(dosRegisters);
+    loadFileintoMemory(memory);
+    executeInstructions(dosRegisters, memory);
     return 0;
 }
