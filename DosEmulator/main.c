@@ -7,7 +7,7 @@
 int parse(byte *memory, int memSize){
     int i = 0;
     while(i < memSize){
-        if(memory[i] == 0x66 || memory[i] ==  0x67 || memory[i] == 0x26){
+        if(memory[i] == segmentOverride || memory[i] ==  operandOverride || memory[i] == addressOverride){
             printf("%02x ", memory[i]);
             i++;
         }
