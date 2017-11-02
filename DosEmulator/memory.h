@@ -8,7 +8,7 @@
 #define addressOverride 0x67
 
 /* instrukce */
-#define addR8toR/M8 0x00
+#define addR8toRM8 0x00
 #define add 0x03
 #define xor 0x33
 #define incrementEDX 0x42
@@ -26,9 +26,9 @@
 #define moveBX 0xBB
 #define moveSI 0xBE
 #define moveDI 0xBF
-#define moveIMM16toR/M16 0xC7
+#define moveIMM16toRM16 0xC7
 #define interrupt 0xCD
-#define jump0xEB
+#define jump 0xEB
 #define increment 0xFF
 
 void printMemory(byte* memory, int memSize);

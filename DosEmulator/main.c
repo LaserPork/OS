@@ -12,7 +12,29 @@ int parse(byte *memory, int memSize){
             i++;
         }
         switch (memory[i]){
-            case 0xb8: printf("%02x ", memory[i]); i++; break;
+            case addR8toRM8:;
+            case add:;
+            case xor:;
+            case incrementEDX:;
+            case incrementEBX:;
+            case decrementECX:;
+            case jumpNotEqual:;
+            case jumpNotParity:;
+            case compare:;
+            case moveToR8:;
+            case moveFromSegment:;
+            case moveToSegment:;
+            case moveAH:;
+            case moveAX:;
+            case moveDX:;
+            case moveBX:;
+            case moveSI:;
+            case moveDI:;
+            case moveIMM16toRM16:;
+            case interrupt:;
+            case jump:;
+            case increment:;
+            default:printf("This virtualization doesn't use opcode %02x ", memory[i]);
         }
         printf("%02x ", memory[i]);
         i++;
