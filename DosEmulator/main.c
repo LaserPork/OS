@@ -7,35 +7,85 @@
 int executeInstructions(registers* dosRegisters, byte *memory){
     while(dosRegisters->ip < 166){
         if(memory[dosRegisters->ip ] == segmentOverride || memory[dosRegisters->ip ] ==  operandOverride || memory[dosRegisters->ip ] == addressOverride){
-            printf("%02x ", memory[dosRegisters->ip ]);
-            dosRegisters->ip ++;
-        }
-        switch (memory[dosRegisters->ip]){
-            case addR8toRM8:        execAddR8toRM8(memory,dosRegisters);break;
-            case add:               execAdd(memory,dosRegisters);break;
-            case xor:               execXor(memory,dosRegisters);break;
-            case incrementEDX:      execIncrementEDX(memory,dosRegisters);break;
-            case incrementEBX:      execIncrementEBX(memory,dosRegisters);break;
-            case decrementECX:      execDecrementECX(memory,dosRegisters);break;
-            case jumpNotEqual:      execJumpNotEqual(memory,dosRegisters);break;
-            case jumpNotParity:     execJumpNotParity(memory,dosRegisters);break;
-            case compare:           execCompare(memory,dosRegisters);break;
-            case moveToR8:          execMoveToR8(memory,dosRegisters);break;
-            case moveFromSegment:   execMoveFromSegment(memory,dosRegisters);break;
-            case moveToSegment:     execMoveToSegment(memory,dosRegisters);break;
-            case moveAH:            execMoveAH(memory,dosRegisters);break;
-            case moveAX:            execMoveAX(memory,dosRegisters);break;
-            case moveDX:            execMoveDX(memory,dosRegisters);break;
-            case moveBX:            execMoveBX(memory,dosRegisters);break;
-            case moveSI:            execMoveSI(memory,dosRegisters);break;
-            case moveDI:            execMoveDI(memory,dosRegisters);break;
-            case moveIMM16toRM16:   execMoveIMM16toRM16(memory,dosRegisters);break;
-            case interrupt:         execInterrupt(memory,dosRegisters);break;
-            case jump:              execJump(memory,dosRegisters);break;
-            case increment:         execIncrement(memory,dosRegisters);break;
-            default:printf("This virtualization doesn't use opcode %02x \n", memory[dosRegisters->ip]);dosRegisters->ip++;break;
-        }
+            if(LOGGER){
+                printf("%02x ", memory[dosRegisters->ip]);
+            }
+            dosRegisters->ip++;
+        }else {
+            switch (memory[dosRegisters->ip]) {
+                case addR8toRM8:
+                    execAddR8toRM8(memory, dosRegisters);
+                    break;
+                case add:
+                    execAdd(memory, dosRegisters);
+                    break;
+                case xor:
+                    execXor(memory, dosRegisters);
+                    break;
+                case incrementEDX:
+                    execIncrementEDX(memory, dosRegisters);
+                    break;
+                case incrementEBX:
+                    execIncrementEBX(memory, dosRegisters);
+                    break;
+                case decrementECX:
+                    execDecrementECX(memory, dosRegisters);
+                    break;
+                case jumpNotEqual:
+                    execJumpNotEqual(memory, dosRegisters);
+                    break;
+                case jumpNotParity:
+                    execJumpNotParity(memory, dosRegisters);
+                    break;
+                case compare:
+                    execCompare(memory, dosRegisters);
+                    break;
+                case moveToR8:
+                    execMoveToR8(memory, dosRegisters);
+                    break;
+                case moveFromSegment:
+                    execMoveFromSegment(memory, dosRegisters);
+                    break;
+                case moveToSegment:
+                    execMoveToSegment(memory, dosRegisters);
+                    break;
+                case moveAH:
+                    execMoveAH(memory, dosRegisters);
+                    break;
+                case moveAX:
+                    execMoveAX(memory, dosRegisters);
+                    break;
+                case moveDX:
+                    execMoveDX(memory, dosRegisters);
+                    break;
+                case moveBX:
+                    execMoveBX(memory, dosRegisters);
+                    break;
+                case moveSI:
+                    execMoveSI(memory, dosRegisters);
+                    break;
+                case moveDI:
+                    execMoveDI(memory, dosRegisters);
+                    break;
+                case moveIMM16toRM16:
+                    execMoveIMM16toRM16(memory, dosRegisters);
+                    break;
+                case interrupt:
+                    execInterrupt(memory, dosRegisters);
+                    break;
+                case jump:
+                    execJump(memory, dosRegisters);
+                    break;
+                case increment:
+                    execIncrement(memory, dosRegisters);
+                    break;
+                default:
+                    printf("This virtualization doesn't use opcode %02x \n", memory[dosRegisters->ip]);
+                    dosRegisters->ip++;
+                    break;
+            }
 
+        }
     }
 }
 int loadFileintoMemory(byte *memory){
