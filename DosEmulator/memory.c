@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <mem.h>
+#include <stdlib.h>
 
 
 int execAddR8toRM8(byte *memory,registers* reg){
@@ -70,6 +71,8 @@ int execMoveFromSegment(byte *memory,registers* reg){
     if(LOGGER){
         printf("MoveFromSegment\n");
     }
+    printByte(memory[reg->ip+1]);
+    exit(0);
     reg->ip+=2;
 }
 int execMoveToSegment(byte *memory,registers* reg){
@@ -165,4 +168,15 @@ void printMemory(byte *memory, int memSize) {
         printf("%02X", memory[i]);
     }
     printf("\n");
+}
+
+void printByte(byte b){
+    int i;
+
+    printf("%02X\n", b);
+
+    for(i=0;i<8;i++){
+        printf("%i ", b & 0x01);
+        b = b >> 1;
+    }
 }

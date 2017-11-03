@@ -61,6 +61,6 @@ int execIncrement(byte *memory,registers* reg);
 
 
 void printMemory(byte* memory, int memSize);
-
+void printByte(byte b);
 
 #endif

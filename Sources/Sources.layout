@@ -4,7 +4,7 @@ CursorRow=1
 TopLine=1
 LeftChar=1
 [Editors]
-Order=3
+Order=
 Focused=3
 [Editor_3]
 CursorCol=31
