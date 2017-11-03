@@ -63,4 +63,10 @@ int execIncrement(byte *memory,registers* reg);
 void printMemory(byte* memory, int memSize);
 void printByte(byte b);
 
+int getRMField(byte addrMode);
+int getAdressingMode(byte addrMode);
+int getModifier(byte addrMode);
+
+halfRegister* getRegister(int correctPartOfAddrMode, registers* reg);
+halfRegister* getSegment(int correctPartOfAddrMode, registers* reg);
 #endif

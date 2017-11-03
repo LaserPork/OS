@@ -68,18 +68,40 @@ int execMoveToR8(byte *memory,registers* reg){
     /* muze byt jine*/
 }
 int execMoveFromSegment(byte *memory,registers* reg){
+    halfRegister *destinationRegister,*segmentRegister;
     if(LOGGER){
         printf("MoveFromSegment\n");
     }
-    printByte(memory[reg->ip+1]);
-    exit(0);
-    reg->ip+=2;
+    reg->ip+=1;
+    if(getAdressingMode(memory[reg->ip])==3){
+        destinationRegister = getRegister(getRMField(memory[reg->ip]),reg);
+        segmentRegister = getSegment(getModifier(memory[reg->ip]),reg);
+        *destinationRegister = *segmentRegister;
+    }else{
+        if(LOGGER){
+            printf("Unimplemented Addressing mode\n");
+            exit(-1);
+        }
+    }
+    reg->ip+=1;
 }
 int execMoveToSegment(byte *memory,registers* reg){
+    halfRegister *sourceRegister,*segmentRegister;
     if(LOGGER){
         printf("MoveToSegment\n");
     }
-    reg->ip+=2;
+    reg->ip+=1;
+    if(getAdressingMode(memory[reg->ip])==3){
+        sourceRegister = getRegister(getRMField(memory[reg->ip]),reg);
+        segmentRegister = getSegment(getModifier(memory[reg->ip]),reg);
+        *segmentRegister = *sourceRegister;
+    }else{
+        if(LOGGER){
+            printf("Unimplemented Addressing mode\n");
+            exit(-1);
+        }
+    }
+    reg->ip+=1;
 }
 int execMoveAH(byte *memory,registers* reg){
     if(LOGGER){
@@ -176,7 +198,56 @@ void printByte(byte b){
     printf("%02X\n", b);
 
     for(i=0;i<8;i++){
-        printf("%i ", b & 0x01);
+        printf("%i", b & 0x01);
         b = b >> 1;
+        if(i==2){
+            printf(" ");
+        }
+        if(i==5){
+            printf(" ");
+        }
+    }
+    printf("\n", b);
+}
+
+int getRMField(byte addrMode){
+    return addrMode&7;
+}
+
+int getAdressingMode(byte addrMode){
+    return addrMode>> 6;
+}
+
+int getModifier(byte addrMode){
+    return (addrMode>>3)&7;
+}
+
+halfRegister* getRegister(int correctPartOfAddrMode, registers* reg){
+    switch (correctPartOfAddrMode)
+    {
+        case 0: return &reg->ax;
+        case 1: return &reg->cx;
+        case 2: return &reg->dx;
+        case 3: return &reg->bx;
+        case 4: return &reg->sp;
+        case 5: return &reg->di;
+        case 6: return &reg->si;
+        case 7: return &reg->bx;
+        default:
+            if(LOGGER){printf("Unknown destination register\n");}
+            exit(-1);
+    }
+
+}
+
+halfRegister* getSegment(int correctPartOfAddrMode, registers* reg){
+    switch (correctPartOfAddrMode)
+    {
+        case 0: return &reg->es;
+        case 1: return &reg->cs;
+        case 3: return &reg->ds;
+        default:
+            if(LOGGER){printf("Unknown segment register\n");}
+            exit(-1);
     }
 }
