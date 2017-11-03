@@ -129,10 +129,20 @@ int execInterrupt(byte *memory,registers* reg){
     reg->ip++;
     if(memory[reg->ip] == 0x10){
         if(LOGGER){
-            printf("Setting screen mode\n");
+            printf("->Setting screen mode\n");
         }
         memset(memory+displayPointer,0,80*25*2);
         reg->ip++;
+        return 10;
+    }else if(memory[reg->ip] == 0x20){
+        if(LOGGER){
+            printf("->Quitting\n");
+        }
+        return 20;
+    }else if(memory[reg->ip] == 0x21){
+        return 21;
+    }else{
+        return -1;
     }
 }
 int execJump(byte *memory,registers* reg){
