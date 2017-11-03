@@ -32,6 +32,8 @@
 #define increment 0xFF
 
 #define LOGGER 1
+#define displayPointer 0xA000
+#define codeOffset 0x100
 
 int execAddR8toRM8(byte *memory,registers* reg);
 int execAdd(byte *memory,registers* reg);

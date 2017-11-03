@@ -4,12 +4,13 @@
 #include "memory.h"
 #include <math.h>
 
+
 int executeInstructions(registers* dosRegisters, byte *memory){
-    while(dosRegisters->ip < 166){
+    while(dosRegisters->ip < codeOffset+166){
+        if(LOGGER){
+            printf("Opcode: %02x \n", memory[dosRegisters->ip]);
+        }
         if(memory[dosRegisters->ip ] == segmentOverride || memory[dosRegisters->ip ] ==  operandOverride || memory[dosRegisters->ip ] == addressOverride){
-            if(LOGGER){
-                printf("%02x ", memory[dosRegisters->ip]);
-            }
             dosRegisters->ip++;
         }else {
             switch (memory[dosRegisters->ip]) {
@@ -107,7 +108,7 @@ int loadFileintoMemory(byte *memory){
     }
     while ((c = fgetc(filePointer)) != EOF)
     {
-        memory[memSize++] = (byte) c;
+        memory[0x100+memSize++] = (byte) c;
     }
     printMemory(memory, memSize);
 }
@@ -117,7 +118,7 @@ int main() {
     registers *dosRegisters;
     byte *memory;
     dosRegisters = malloc(sizeof(registers));
-    memory = malloc((int)pow(2,10) * sizeof(byte));
+    memory = malloc((int)pow(2,16) * sizeof(byte));
     initRegisters(dosRegisters);
     loadFileintoMemory(memory);
     executeInstructions(dosRegisters, memory);

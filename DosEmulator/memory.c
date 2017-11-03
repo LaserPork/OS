@@ -1,6 +1,9 @@
 #include "registers.h"
 #include "memory.h"
 #include <stdio.h>
+#include <math.h>
+#include <mem.h>
+
 
 int execAddR8toRM8(byte *memory,registers* reg){
     if(LOGGER){
@@ -85,7 +88,9 @@ int execMoveAX(byte *memory,registers* reg){
     if(LOGGER){
         printf("MoveAX\n");
     }
-    reg->ip+=3;
+    reg->ip++;
+    reg->al = memory[reg->ip++];
+    reg->ah = memory[reg->ip++];
 }
 int execMoveDX(byte *memory,registers* reg){
     if(LOGGER){
@@ -123,6 +128,10 @@ int execInterrupt(byte *memory,registers* reg){
     }
     reg->ip++;
     if(memory[reg->ip] == 0x10){
+        if(LOGGER){
+            printf("Setting screen mode\n");
+        }
+        memset(memory+displayPointer,0,80*25*2);
         reg->ip++;
     }
 }
@@ -141,9 +150,8 @@ int execIncrement(byte *memory,registers* reg){
 
 void printMemory(byte *memory, int memSize) {
     int i;
-    printf("%d\n",0x100);
     printf("MEMORY DUMP: %d bytes\n",memSize);
-    for (i = 0; i < memSize; i++) {
+    for (i = codeOffset; i < (codeOffset+memSize); i++) {
         printf("%02X", memory[i]);
     }
     printf("\n");
