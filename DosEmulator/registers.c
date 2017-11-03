@@ -23,10 +23,10 @@ void printRegisters(registers* reg){
 }
 
 void initRegisters(registers* reg){
-    reg->eax = 0x00000000;
-    reg->ebx = 0x00000000;
-    reg->ecx = 0x00000000;
-    reg->edx = 0x00000000;
+    reg->eax = 0xFFFFFFFF;
+    reg->ebx = 0xFFFFFFFF;
+    reg->ecx = 0xFFFFFFFF;
+    reg->edx = 0xFFFFFFFF;
     reg->cs = 0x1234;//code segment
     reg->ds = 0x0000; //data segment
     reg->ss = 0x0000; //stack segment

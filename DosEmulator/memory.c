@@ -6,68 +6,79 @@
 #include <stdlib.h>
 
 
-int execAddR8toRM8(byte *memory,registers* reg){
+void execAddR8toRM8(byte *memory,registers* reg){
     if(LOGGER){
         printf("AddR8toRM8\n");
     }
     reg->ip+=2;
 }
-int execAdd(byte *memory,registers* reg){
+void execAdd(byte *memory,registers* reg){
     if(LOGGER){
         printf("Add\n");
     }
     reg->ip+=2;
 }
-int execXor(byte *memory,registers* reg){
+void execXor(byte *memory,registers* reg){
+    wholeRegister *destinationRegister,*sourceRegister;
     if(LOGGER){
         printf("Xor\n");
     }
-    reg->ip+=2;
+    if(reg->instructionOverride == operandOverride){
+        reg->instructionOverride = 0;
+        reg->ip+=1;
+        destinationRegister = (wholeRegister*)getRegister(getRMField(memory[reg->ip]),reg);
+        sourceRegister = (wholeRegister*)getRegister(getModifier(memory[reg->ip]),reg);
+        *destinationRegister = *sourceRegister ^ *destinationRegister;
+        reg->ip+=1;
+    }else{
+        printf("Xor without operand override index was not implemented");
+        exit(-1);
+    }
 }
-int execIncrementEDX(byte *memory,registers* reg){
+void execIncrementEDX(byte *memory,registers* reg){
     if(LOGGER){
         printf("IncrementEDX\n");
     }
     reg->ip++;
 }
-int execIncrementEBX(byte *memory,registers* reg){
+void execIncrementEBX(byte *memory,registers* reg){
     if(LOGGER){
         printf("IncrementEBX\n");
     }
     reg->ip++;
 }
-int execDecrementECX(byte *memory,registers* reg){
+void execDecrementECX(byte *memory,registers* reg){
     if(LOGGER){
         printf("DecrementECX\n");
     }
     reg->ip++;
 }
-int execJumpNotEqual(byte *memory,registers* reg){
+void execJumpNotEqual(byte *memory,registers* reg){
     if(LOGGER){
         printf("JumpNotEqual\n");
     }
     reg->ip+=2;
 }
-int execJumpNotParity(byte *memory,registers* reg){
+void execJumpNotParity(byte *memory,registers* reg){
     if(LOGGER){
         printf("JumpNotParity\n");
     }
     reg->ip++;
 }
-int execCompare(byte *memory,registers* reg){
+void execCompare(byte *memory,registers* reg){
     if(LOGGER){
         printf("Compare\n");
     }
     reg->ip+=3;
 }
-int execMoveToR8(byte *memory,registers* reg){
+void execMoveToR8(byte *memory,registers* reg){
     if(LOGGER){
         printf("MoveToR8\n");
     }
     reg->ip+=2;
     /* muze byt jine*/
 }
-int execMoveFromSegment(byte *memory,registers* reg){
+void execMoveFromSegment(byte *memory,registers* reg){
     halfRegister *destinationRegister,*segmentRegister;
     if(LOGGER){
         printf("MoveFromSegment\n");
@@ -85,7 +96,7 @@ int execMoveFromSegment(byte *memory,registers* reg){
     }
     reg->ip+=1;
 }
-int execMoveToSegment(byte *memory,registers* reg){
+void execMoveToSegment(byte *memory,registers* reg){
     halfRegister *sourceRegister,*segmentRegister;
     if(LOGGER){
         printf("MoveToSegment\n");
@@ -103,45 +114,55 @@ int execMoveToSegment(byte *memory,registers* reg){
     }
     reg->ip+=1;
 }
-int execMoveAH(byte *memory,registers* reg){
+void execMoveAH(byte *memory,registers* reg){
     if(LOGGER){
         printf("MoveAH\n");
     }
+    reg->ip++;
+    reg->ah = memory[reg->ip++];
     reg->ip+=2;
 }
-int execMoveAX(byte *memory,registers* reg){
+void execMoveAX(byte *memory,registers* reg){
     if(LOGGER){
         printf("MoveAX\n");
     }
     reg->ip++;
-    reg->al = memory[reg->ip++];
-    reg->ah = memory[reg->ip++];
+    reg->ax = memory[reg->ip++];
+    reg->ax += memory[reg->ip++]*0x100;
 }
-int execMoveDX(byte *memory,registers* reg){
+void execMoveDX(byte *memory,registers* reg){
     if(LOGGER){
         printf("MoveDX\n");
     }
-    reg->ip+=3;
+    reg->ip++;
+    reg->dx = memory[reg->ip++];
+    reg->dx += memory[reg->ip++]*0x100;
 }
-int execMoveBX(byte *memory,registers* reg){
+void execMoveBX(byte *memory,registers* reg){
     if(LOGGER){
         printf("MoveBX\n");
     }
-    reg->ip+=3;
+    reg->ip++;
+    reg->bx = memory[reg->ip++];
+    reg->bx += memory[reg->ip++]*0x100;
 }
-int execMoveSI(byte *memory,registers* reg){
+void execMoveSI(byte *memory,registers* reg){
     if(LOGGER){
         printf("MoveSI\n");
     }
-    reg->ip+=3;
+    reg->ip++;
+    reg->si = memory[reg->ip++];
+    reg->si += memory[reg->ip++]*0x100;
 }
-int execMoveDI(byte *memory,registers* reg){
+void execMoveDI(byte *memory,registers* reg){
     if(LOGGER){
         printf("MoveDI\n");
     }
-    reg->ip+=3;
+    reg->ip++;
+    reg->di = memory[reg->ip++];
+    reg->di += memory[reg->ip++]*0x100;
 }
-int execMoveIMM16toRM16(byte *memory,registers* reg){
+void execMoveIMM16toRM16(byte *memory,registers* reg){
     if(LOGGER){
         printf("MoveIMM16toRM16\n");
     }
@@ -170,13 +191,13 @@ int execInterrupt(byte *memory,registers* reg){
         return -1;
     }
 }
-int execJump(byte *memory,registers* reg){
+void execJump(byte *memory,registers* reg){
     if(LOGGER){
         printf("Jump\n");
     }
     reg->ip+=2;
 }
-int execIncrement(byte *memory,registers* reg){
+void execIncrement(byte *memory,registers* reg){
     if(LOGGER){
         printf("Increment\n");
     }

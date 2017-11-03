@@ -35,28 +35,28 @@
 #define displayPointer 0xA000
 #define codeOffset 0x100
 
-int execAddR8toRM8(byte *memory,registers* reg);
-int execAdd(byte *memory,registers* reg);
-int execXor(byte *memory,registers* reg);
-int execIncrementEDX(byte *memory,registers* reg);
-int execIncrementEBX(byte *memory,registers* reg);
-int execDecrementECX(byte *memory,registers* reg);
-int execJumpNotEqual(byte *memory,registers* reg);
-int execJumpNotParity(byte *memory,registers* reg);
-int execCompare(byte *memory,registers* reg);
-int execMoveToR8(byte *memory,registers* reg);
-int execMoveFromSegment(byte *memory,registers* reg);
-int execMoveToSegment(byte *memory,registers* reg);
-int execMoveAH(byte *memory,registers* reg);
-int execMoveAX(byte *memory,registers* reg);
-int execMoveDX(byte *memory,registers* reg);
-int execMoveBX(byte *memory,registers* reg);
-int execMoveSI(byte *memory,registers* reg);
-int execMoveDI(byte *memory,registers* reg);
-int execMoveIMM16toRM16(byte *memory,registers* reg);
+void execAddR8toRM8(byte *memory,registers* reg);
+void execAdd(byte *memory,registers* reg);
+void execXor(byte *memory,registers* reg);
+void execIncrementEDX(byte *memory,registers* reg);
+void execIncrementEBX(byte *memory,registers* reg);
+void execDecrementECX(byte *memory,registers* reg);
+void execJumpNotEqual(byte *memory,registers* reg);
+void execJumpNotParity(byte *memory,registers* reg);
+void execCompare(byte *memory,registers* reg);
+void execMoveToR8(byte *memory,registers* reg);
+void execMoveFromSegment(byte *memory,registers* reg);
+void execMoveToSegment(byte *memory,registers* reg);
+void execMoveAH(byte *memory,registers* reg);
+void execMoveAX(byte *memory,registers* reg);
+void execMoveDX(byte *memory,registers* reg);
+void execMoveBX(byte *memory,registers* reg);
+void execMoveSI(byte *memory,registers* reg);
+void execMoveDI(byte *memory,registers* reg);
+void execMoveIMM16toRM16(byte *memory,registers* reg);
 int execInterrupt(byte *memory,registers* reg);
-int execJump(byte *memory,registers* reg);
-int execIncrement(byte *memory,registers* reg);
+void execJump(byte *memory,registers* reg);
+void execIncrement(byte *memory,registers* reg);
 
 
 

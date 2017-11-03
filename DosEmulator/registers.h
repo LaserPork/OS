@@ -40,6 +40,8 @@ typedef struct {
     halfRegister sp; //stack pointer snad nebudeme zasobnik potrebovat
     halfRegister bp; //base pointer
     halfRegister ip; //instruciton pointer
+
+    int instructionOverride;
 } registers;
 
 void printRegisters(registers* reg);

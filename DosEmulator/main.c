@@ -12,74 +12,80 @@ int executeInstructions(registers* dosRegisters, byte *memory){
             printf("Opcode: %02x \n", memory[dosRegisters->ip]);
         }
         if(memory[dosRegisters->ip ] == segmentOverride || memory[dosRegisters->ip ] ==  operandOverride || memory[dosRegisters->ip ] == addressOverride){
+            switch(memory[dosRegisters->ip]){
+                case segmentOverride:dosRegisters->instructionOverride=segmentOverride;break;
+                case operandOverride:dosRegisters->instructionOverride=operandOverride;break;
+                case addressOverride:dosRegisters->instructionOverride=addressOverride;break;
+                default:exit(-1);
+            }
             dosRegisters->ip++;
         }else {
             switch (memory[dosRegisters->ip]) {
                 case addR8toRM8:
-                    returnValue = execAddR8toRM8(memory, dosRegisters);
+                    execAddR8toRM8(memory, dosRegisters);
                     break;
                 case add:
-                    returnValue = execAdd(memory, dosRegisters);
+                    execAdd(memory, dosRegisters);
                     break;
                 case xor:
-                    returnValue = execXor(memory, dosRegisters);
+                    execXor(memory, dosRegisters);
                     break;
                 case incrementEDX:
-                    returnValue = execIncrementEDX(memory, dosRegisters);
+                    execIncrementEDX(memory, dosRegisters);
                     break;
                 case incrementEBX:
-                    returnValue = execIncrementEBX(memory, dosRegisters);
+                    execIncrementEBX(memory, dosRegisters);
                     break;
                 case decrementECX:
-                    returnValue = execDecrementECX(memory, dosRegisters);
+                    execDecrementECX(memory, dosRegisters);
                     break;
                 case jumpNotEqual:
-                    returnValue = execJumpNotEqual(memory, dosRegisters);
+                    execJumpNotEqual(memory, dosRegisters);
                     break;
                 case jumpNotParity:
-                    returnValue = execJumpNotParity(memory, dosRegisters);
+                    execJumpNotParity(memory, dosRegisters);
                     break;
                 case compare:
-                    returnValue = execCompare(memory, dosRegisters);
+                    execCompare(memory, dosRegisters);
                     break;
                 case moveToR8:
-                    returnValue = execMoveToR8(memory, dosRegisters);
+                    execMoveToR8(memory, dosRegisters);
                     break;
                 case moveFromSegment:
-                    returnValue = execMoveFromSegment(memory, dosRegisters);
+                    execMoveFromSegment(memory, dosRegisters);
                     break;
                 case moveToSegment:
-                    returnValue = execMoveToSegment(memory, dosRegisters);
+                    execMoveToSegment(memory, dosRegisters);
                     break;
                 case moveAH:
-                    returnValue = execMoveAH(memory, dosRegisters);
+                    execMoveAH(memory, dosRegisters);
                     break;
                 case moveAX:
-                    returnValue = execMoveAX(memory, dosRegisters);
+                    execMoveAX(memory, dosRegisters);
                     break;
                 case moveDX:
-                    returnValue = execMoveDX(memory, dosRegisters);
+                    execMoveDX(memory, dosRegisters);
                     break;
                 case moveBX:
-                    returnValue = execMoveBX(memory, dosRegisters);
+                    execMoveBX(memory, dosRegisters);
                     break;
                 case moveSI:
-                    returnValue = execMoveSI(memory, dosRegisters);
+                    execMoveSI(memory, dosRegisters);
                     break;
                 case moveDI:
-                    returnValue = execMoveDI(memory, dosRegisters);
+                    execMoveDI(memory, dosRegisters);
                     break;
                 case moveIMM16toRM16:
-                    returnValue = execMoveIMM16toRM16(memory, dosRegisters);
+                    execMoveIMM16toRM16(memory, dosRegisters);
                     break;
                 case interrupt:
                     returnValue = execInterrupt(memory, dosRegisters);
                     break;
                 case jump:
-                    returnValue = execJump(memory, dosRegisters);
+                    execJump(memory, dosRegisters);
                     break;
                 case increment:
-                    returnValue = execIncrement(memory, dosRegisters);
+                    execIncrement(memory, dosRegisters);
                     break;
                 default:
                     printf("This virtualization doesn't use opcode %02x \n", memory[dosRegisters->ip]);
