@@ -11,12 +11,14 @@ int executeInstructions(registers* dosRegisters, byte *memory){
         if(LOGGER){
             printf("Opcode: %02x \n", memory[dosRegisters->ip]);
         }
-        if(memory[dosRegisters->ip ] == segmentOverride || memory[dosRegisters->ip ] ==  operandOverride || memory[dosRegisters->ip ] == addressOverride){
+        if(memory[dosRegisters->ip] == segmentOverrideValue ||
+           memory[dosRegisters->ip] == operandOverrideValue ||
+           memory[dosRegisters->ip] == addressOverrideValue){
             switch(memory[dosRegisters->ip]){
-                case segmentOverride:dosRegisters->instructionOverride=segmentOverride;break;
-                case operandOverride:dosRegisters->instructionOverride=operandOverride;break;
-                case addressOverride:dosRegisters->instructionOverride=addressOverride;break;
-                default:exit(-1);
+                case segmentOverrideValue: dosRegisters->segmentOverride=1;break;
+                case operandOverrideValue: dosRegisters->operandOverride=1;break;
+                case addressOverrideValue: dosRegisters->addressOverride=1;break;
+                default: break;
             }
             dosRegisters->ip++;
         }else {
@@ -88,9 +90,12 @@ int executeInstructions(registers* dosRegisters, byte *memory){
                     execIncrement(memory, dosRegisters);
                     break;
                 default:
-                    printf("This virtualization doesn't use opcode %02x \n", memory[dosRegisters->ip]);
-                    dosRegisters->ip++;
-                    break;
+                    printf("Opcode %02x is not implemeted\n", memory[dosRegisters->ip]);
+                    exit(-1);
+            }
+            if(dosRegisters->operandOverride || dosRegisters->segmentOverride || dosRegisters->addressOverride){
+                printf("Instruction did not consume prefix correctly\n");
+                exit(-1);
             }
             if(returnValue == 20){
                 return 0;

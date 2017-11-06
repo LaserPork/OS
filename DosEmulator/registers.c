@@ -38,4 +38,7 @@ void initRegisters(registers* reg){
     reg->sp = 0x0000; //stack pointer snad nebudeme zasobnik potrebovat
     reg->bp = 0x0000; //base pointer
     reg->ip = codeOffset;
+    reg->operandOverride = 0;
+    reg->addressOverride = 0;
+    reg->segmentOverride = 0;
 }

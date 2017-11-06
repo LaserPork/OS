@@ -41,7 +41,10 @@ typedef struct {
     halfRegister bp; //base pointer
     halfRegister ip; //instruciton pointer
 
-    int instructionOverride;
+    int segmentOverride;
+    int operandOverride;
+    int addressOverride;
+    int isEqual;
 } registers;
 
 void printRegisters(registers* reg);

@@ -3,9 +3,9 @@
 #define memory_h
 
 /* prefixy */
-#define segmentOverride 0x26
-#define operandOverride 0x66
-#define addressOverride 0x67
+#define segmentOverrideValue 0x26
+#define operandOverrideValue 0x66
+#define addressOverrideValue 0x67
 
 /* instrukce */
 #define addR8toRM8 0x00
