@@ -243,10 +243,20 @@ void execMoveDI(byte *memory,registers* reg){
     reg->di += memory[reg->ip++]*0x100;
 }
 void execMoveIMM16toRM16(byte *memory,registers* reg){
+    halfRegister *destinationRegister, addressInMemory, value;
     if(LOGGER){
         printf("MoveIMM16toRM16\n");
     }
-    reg->ip+=6;
+    reg->ip++;
+    if(getAdressingMode(memory[reg->ip])==2){
+        destinationRegister = getRegister(getRMField(memory[reg->ip]),reg);
+        addressInMemory = (halfRegister)(reg->ds + *destinationRegister + memory[reg->ip+1] + memory[reg->ip+2]*0x100);
+        value = (halfRegister)(memory[reg->ip+3] + memory[reg->ip+4]*0x100);
+        memory[addressInMemory] = (byte)value;
+        reg->ip += 5;
+    }else{
+        printf("Unimplemeted Addressing mode when writing to memory\n");
+    }
 }
 int execInterrupt(byte *memory,registers* reg){
     if(LOGGER){
@@ -264,8 +274,32 @@ int execInterrupt(byte *memory,registers* reg){
         if(LOGGER){
             printf("->Quitting\n");
         }
+        int i;
+        byte ch,color;
+        for(i=0; i< 80*25*4; i++){
+            if(i%80 == 0){printf("|\n");};
+            ch = memory[displayPointer + i];
+            if(ch>0x20 && ch<0xff){
+                printf("%c",ch);
+            }else{
+                printf(" ");
+            }
+            color = memory[displayPointer + 2*i+1];
+        }
         return 20;
     }else if(memory[reg->ip] == 0x21){
+        int i;
+        halfRegister addressInMemory;
+        byte ch,color;
+        for (i=0; i< 80*25*2; i++){
+            addressInMemory = (halfRegister)(reg->dx +i);
+            ch =  memory[addressInMemory];
+            if (ch == 0x24){
+                break;
+            }
+            printf("%c (%x) ",ch, ch);
+            memory[displayPointer + 2 * i] = ch;
+        }
         return 21;
     }else{
         return -1;
