@@ -89,9 +89,12 @@ void execJumpNotEqual(byte *memory,registers* reg){
         printf("JumpNotEqual\n");
     }
     reg->ip++;
+    int8_t i = (byte)memory[reg->ip];
+    /*printf("Skok je %d\n",i);*/
     if(reg->isEqual){
         reg->ip++;
     }else{
+        reg->ip += i;
         reg->ip++;
     }
 }
@@ -149,7 +152,6 @@ void execMoveToR8(byte *memory,registers* reg){
         }
 
         if(reg->segmentOverride) {
-            printf("seg\n");
             reg->segmentOverride = 0;
             addressInMemory += reg->es;
         }else {
@@ -259,26 +261,31 @@ void execMoveIMM16toRM16(byte *memory,registers* reg){
     }
 }
 int execInterrupt(byte *memory,registers* reg){
-    if(LOGGER){
-        printf("Interrupt\n");
-    }
     reg->ip++;
+    //if(LOGGER){
+        printf("Interrupt\n");
+        printByte(memory[reg->ip]);
+    //}
+
     if(memory[reg->ip] == 0x10){
         if(LOGGER){
             printf("->Setting screen mode\n");
         }
         memset(memory+displayPointer,0,80*25*2);
+        system("MODE CON: COLS=80 LINES=25\n");
+        system("COLOR 01\n");
         reg->ip++;
         return 10;
     }else if(memory[reg->ip] == 0x20){
+        system("color\n");
         if(LOGGER){
             printf("->Quitting\n");
         }
         int i;
         byte ch,color;
-        for(i=0; i< 80*25*4; i++){
-            if(i%80 == 0){printf("|\n");};
-            ch = memory[displayPointer + i];
+        for(i=0; i< 80*25*2; i++){
+            if(i%80 == 0 && i != 0){printf("\n");continue;};
+            ch = memory[displayPointer + i*2];
             if(ch>0x20 && ch<0xff){
                 printf("%c",ch);
             }else{
@@ -290,7 +297,11 @@ int execInterrupt(byte *memory,registers* reg){
     }else if(memory[reg->ip] == 0x21){
         int i;
         halfRegister addressInMemory;
+        printf("->Writing into graphic buffer\n");
         byte ch,color;
+        if(LOGGER){
+            printf("->Writing into graphic buffer\n");
+        }
         for (i=0; i< 80*25*2; i++){
             addressInMemory = (halfRegister)(reg->dx +i);
             ch =  memory[addressInMemory];
@@ -309,6 +320,10 @@ void execJump(byte *memory,registers* reg){
     if(LOGGER){
         printf("Jump\n");
     }
+    reg->ip++;
+    int8_t i = (byte)memory[reg->ip];
+    //printf("Skok je %d\n",i);
+    reg->ip += i;
     reg->ip++;
     /*tady je ten podelany skok o -1, ma sezrat 2 byty ale vysledne jen sebe*/
 }

@@ -125,7 +125,10 @@ int loadFileintoMemory(byte *memory){
     {
         memory[0x100+memSize++] = (byte) c;
     }
-    printMemory(memory, memSize);
+    if(LOGGER){
+        printMemory(memory, memSize);
+    }
+
 }
 
 
