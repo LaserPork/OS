@@ -27,7 +27,7 @@ void initRegisters(registers* reg){
     reg->ebx = 0xFFFFFFFF;
     reg->ecx = 0xFFFFFFFF;
     reg->edx = 0xFFFFFFFF;
-    reg->cs = 0x1234;//code segment
+    reg->cs = 0x0000;//code segment
     reg->ds = 0x0000; //data segment
     reg->ss = 0x0000; //stack segment
     reg->es = 0x0000; //extra segment

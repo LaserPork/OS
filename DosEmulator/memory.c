@@ -5,7 +5,26 @@
 #include <mem.h>
 #include <stdlib.h>
 
-
+void printReg(registers *regs)
+{
+    printf ("ax: %x ", regs->ax);
+    printf ("bx: %x ", regs->bx);
+    printf ("cx: %x ", regs->cx);
+    printf ("dx: %x ", regs->dx);
+    printf ("si: %x ", regs->si);
+    printf ("di: %x ", regs->di);
+    printf ("cs: %x ", regs->cs);
+    printf ("ds: %x ", regs->ds);
+    printf ("es: %x ", regs->es);
+    printf ("ss: %x ", regs->ss);
+    printf ("sp: %x ", regs->sp);
+    printf ("bp: %x ", regs->bp);
+    printf ("ip: %x ", regs->ip);
+    printf ("fl: 0 ");
+    printf ("pref: %x ", (byte)regs->operandOverride);
+    printf ("espr: %x ", (byte)regs->isEqual);
+    printf("\n");
+}
 void execAddR8toRM8(byte *memory,registers* reg){
     halfRegister *destinationRegister,*sourceRegister;
     if(LOGGER){
@@ -111,9 +130,15 @@ void execCompare(byte *memory,registers* reg){
     }
     reg->ip++;
     destinationRegister = getRegister(getRMField(memory[reg->ip]),reg);
-    if(*destinationRegister == memory[reg->ip+1]){
+    if(*destinationRegister == (int8_t)memory[reg->ip+1]){
+        if(LOGGER){
+            printf("%d is equal to %d\n",*destinationRegister,memory[reg->ip+1]);
+        }
         reg->isEqual = 1;
     }else{
+        if(LOGGER){
+            printf("%d is not equal to %d\n",*destinationRegister,memory[reg->ip+1]);
+        }
         reg->isEqual = 0;
     }
     reg->ip += 2;
@@ -271,8 +296,8 @@ int execInterrupt(byte *memory,registers* reg){
             printf("->Setting screen mode\n");
         }
         memset(memory+displayPointer,0,80*25*2);
-        system("MODE CON: COLS=80 LINES=25\n");
-        system("COLOR 01\n");
+     //   system("MODE CON: COLS=80 LINES=25\n");
+     //   system("COLOR 01\n");
         reg->ip++;
         return 10;
     }else if(memory[reg->ip] == 0x20){
