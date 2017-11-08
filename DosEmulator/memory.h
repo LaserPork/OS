@@ -31,7 +31,7 @@
 #define jump 0xEB
 #define increment 0xFF
 
-#define LOGGER 0
+#define LOGGER 1
 #define displayPointer 0xA000
 #define codeOffset 0x100
 

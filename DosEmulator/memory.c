@@ -201,8 +201,8 @@ void execMoveAH(byte *memory,registers* reg){
         printf("MoveAH\n");
     }
     reg->ip++;
-    reg->ah = memory[reg->ip++];
-    reg->ip+=2;
+    reg->ah = memory[reg->ip];
+    reg->ip++;
 }
 void execMoveAX(byte *memory,registers* reg){
     if(LOGGER){
@@ -262,10 +262,9 @@ void execMoveIMM16toRM16(byte *memory,registers* reg){
 }
 int execInterrupt(byte *memory,registers* reg){
     reg->ip++;
-    //if(LOGGER){
+    if(LOGGER){
         printf("Interrupt\n");
-        printByte(memory[reg->ip]);
-    //}
+    }
 
     if(memory[reg->ip] == 0x10){
         if(LOGGER){
@@ -293,11 +292,11 @@ int execInterrupt(byte *memory,registers* reg){
             }
             color = memory[displayPointer + 2*i+1];
         }
+        reg->ip++;
         return 20;
     }else if(memory[reg->ip] == 0x21){
         int i;
         halfRegister addressInMemory;
-        printf("->Writing into graphic buffer\n");
         byte ch,color;
         if(LOGGER){
             printf("->Writing into graphic buffer\n");
@@ -311,6 +310,7 @@ int execInterrupt(byte *memory,registers* reg){
             printf("%c (%x) ",ch, ch);
             memory[displayPointer + 2 * i] = ch;
         }
+        reg->ip++;
         return 21;
     }else{
         return -1;
