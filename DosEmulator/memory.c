@@ -11,7 +11,6 @@ void execAddR8toRM8(byte *memory,registers* reg){
         printf("AddR8toRM8\n");
     }
     reg->ip++;
-    printByte(memory[reg->ip]);
     destinationRegister = getRegister(getRMField(memory[reg->ip]),reg);
     sourceRegister = getRegister(getModifier(memory[reg->ip]),reg);
     if(LOGGER){
@@ -290,7 +289,7 @@ int execInterrupt(byte *memory,registers* reg){
             printf("->Setting screen mode\n");
         }
         memset(memory+displayPointer,0,80*25*2);
-     //   system("MODE CON: COLS=80 LINES=25\n");
+        system("MODE CON: COLS=80 LINES=25\n");
      //   system("COLOR 01\n");
         reg->ip++;
         return 10;
@@ -301,15 +300,19 @@ int execInterrupt(byte *memory,registers* reg){
         }
         int i;
         byte ch,color;
-        for(i=0; i< 80*25*2; i++){
-            if(i%80 == 0 && i != 0){printf("\n");continue;};
-            ch = memory[displayPointer + i*2];
+        for(i=0; i< 80*20*2; i++){
+         //   if(i%80 == 0 && i != 0){printf("\n");continue;};
+            ch = memory[displayPointer + i];
             if(ch>0x20 && ch<0xff){
                 printf("%c",ch);
+            }else if(i%2 == 1 && ch == 0x00){
+            }else if(i%2 == 0 && ch == 0x00){
+                printf(" ");
             }else{
-                printf("\0");
+                //printf("%02x",ch);
             }
-            color = memory[displayPointer + 2*i+1];
+
+        //    color = memory[displayPointer + 2*i+1];
         }
         reg->ip++;
         return 20;
@@ -326,7 +329,6 @@ int execInterrupt(byte *memory,registers* reg){
             if (ch == 0x24){
                 break;
             }
-            printf("%c (%x) ",ch, ch);
             memory[displayPointer + 2 * i] = ch;
         }
         reg->ip++;
@@ -406,7 +408,7 @@ halfRegister* getRegister(int correctPartOfAddrMode, registers* reg){
         case 4: return &reg->sp;
         case 5: return &reg->bp;
         case 6: return &reg->si;
-        case 7: return &reg->bx;
+        case 7: return &reg->bx; /*to tady je protoze kdyz ho chci tak jsem v 16 bit modu*/
         default:
             printf("Unknown destination register\n");
             exit(-1);

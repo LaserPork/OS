@@ -31,8 +31,8 @@
 #define jump 0xEB
 #define increment 0xFF
 
-#define LOGGER 1
-#define displayPointer 0xA000
+#define LOGGER 0
+#define displayPointer /*0xA000*/ 0xB800
 #define codeOffset 0x100
 
 void execAddR8toRM8(byte *memory,registers* reg);
