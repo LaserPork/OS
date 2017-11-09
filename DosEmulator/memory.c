@@ -263,7 +263,8 @@ void execMoveDI(byte *memory,registers* reg){
     reg->di += memory[reg->ip++]*0x100;
 }
 void execMoveIMM16toRM16(byte *memory,registers* reg){
-    halfRegister *destinationRegister, addressInMemory, value;
+    halfRegister *destinationRegister, addressInMemory;
+    byte  value1, value2;
     if(LOGGER){
         printf("MoveIMM16toRM16\n");
     }
@@ -271,8 +272,10 @@ void execMoveIMM16toRM16(byte *memory,registers* reg){
     if(getAdressingMode(memory[reg->ip])==2){
         destinationRegister = getRegister(getRMField(memory[reg->ip]),reg);
         addressInMemory = (halfRegister)(reg->ds + *destinationRegister + memory[reg->ip+1] + memory[reg->ip+2]*0x100);
-        value = (halfRegister)(memory[reg->ip+3] + memory[reg->ip+4]*0x100);
-        memory[addressInMemory] = (byte)value;
+        value1 = memory[reg->ip+3];
+        value2 = memory[reg->ip+4];
+        memory[addressInMemory] = value1;
+        memory[addressInMemory+1] = value2;
         reg->ip += 5;
     }else{
         printf("Unimplemeted Addressing mode when writing to memory\n");
@@ -290,7 +293,7 @@ int execInterrupt(byte *memory,registers* reg){
         }
         memset(memory+displayPointer,0,80*25*2);
         system("MODE CON: COLS=80 LINES=25\n");
-     //   system("COLOR 01\n");
+
         reg->ip++;
         return 10;
     }else if(memory[reg->ip] == 0x20){
@@ -300,19 +303,23 @@ int execInterrupt(byte *memory,registers* reg){
         }
         int i;
         byte ch,color;
-        for(i=0; i< 80*20*2; i++){
+        for(i=0; i< 80*20; i++){
          //   if(i%80 == 0 && i != 0){printf("\n");continue;};
-            ch = memory[displayPointer + i];
+            color = memory[displayPointer + i*2+1];
+            if(color == 0x79){
+                printf("\x1b[34;1m");
+                printf("\x1b[47m");
+            }else{
+                printf("\x1b[0m");
+            }
+            ch = memory[displayPointer + i*2];
             if(ch>0x20 && ch<0xff){
                 printf("%c",ch);
-            }else if(i%2 == 1 && ch == 0x00){
-            }else if(i%2 == 0 && ch == 0x00){
+            }else if(ch == 0x00){
                 printf(" ");
-            }else{
-                //printf("%02x",ch);
             }
 
-        //    color = memory[displayPointer + 2*i+1];
+
         }
         reg->ip++;
         return 20;
