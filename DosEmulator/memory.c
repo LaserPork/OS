@@ -303,19 +303,19 @@ int execInterrupt(byte *memory,registers* reg){
         }
         int i;
         byte ch,color;
-        for(i=0; i< 80*20; i++){
+        for(i=0; i< 80*2; i++){
          //   if(i%80 == 0 && i != 0){printf("\n");continue;};
             color = memory[displayPointer + i*2+1];
-            if(color == 0x79){
+
+            ch = memory[displayPointer + i*2];
+            if(ch>0x20 && ch<0xff && color == 0){
+                printf("%c",ch);
+            }else if(ch>0x20 && ch<0xff && color == 0x79){
                 printf("\x1b[34;1m");
                 printf("\x1b[47m");
-            }else{
-                printf("\x1b[0m");
-            }
-            ch = memory[displayPointer + i*2];
-            if(ch>0x20 && ch<0xff){
                 printf("%c",ch);
-            }else if(ch == 0x00){
+                printf("\x1b[0m");
+            }else{
                 printf(" ");
             }
 
