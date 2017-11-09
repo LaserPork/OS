@@ -5,35 +5,22 @@
 #include <mem.h>
 #include <stdlib.h>
 
-void printReg(registers *regs)
-{
-    printf ("ax: %x ", regs->ax);
-    printf ("bx: %x ", regs->bx);
-    printf ("cx: %x ", regs->cx);
-    printf ("dx: %x ", regs->dx);
-    printf ("si: %x ", regs->si);
-    printf ("di: %x ", regs->di);
-    printf ("cs: %x ", regs->cs);
-    printf ("ds: %x ", regs->ds);
-    printf ("es: %x ", regs->es);
-    printf ("ss: %x ", regs->ss);
-    printf ("sp: %x ", regs->sp);
-    printf ("bp: %x ", regs->bp);
-    printf ("ip: %x ", regs->ip);
-    printf ("fl: 0 ");
-    printf ("pref: %x ", (byte)regs->operandOverride);
-    printf ("espr: %x ", (byte)regs->isEqual);
-    printf("\n");
-}
 void execAddR8toRM8(byte *memory,registers* reg){
     halfRegister *destinationRegister,*sourceRegister;
     if(LOGGER){
         printf("AddR8toRM8\n");
     }
     reg->ip++;
+    printByte(memory[reg->ip]);
     destinationRegister = getRegister(getRMField(memory[reg->ip]),reg);
     sourceRegister = getRegister(getModifier(memory[reg->ip]),reg);
+    if(LOGGER){
+        printf("->Memory[%02X] is set to %02X + %02X\n",*destinationRegister, memory[*destinationRegister] ,*sourceRegister);
+    }
     memory[*destinationRegister] = (byte)(memory[*destinationRegister] + *sourceRegister);
+    if(LOGGER){
+        printf("-->Memory[%02X] is now %02X\n",*destinationRegister, memory[*destinationRegister]);
+    }
     reg->ip++;
 }
 void execAdd(byte *memory,registers* reg){
@@ -42,8 +29,15 @@ void execAdd(byte *memory,registers* reg){
         printf("Add\n");
     }
     reg->ip+=1;
+    /*
     destinationRegister = getRegister(getRMField(memory[reg->ip]),reg);
     sourceRegister = getRegister(getModifier(memory[reg->ip]),reg);
+     */
+    destinationRegister = getRegister(getModifier(memory[reg->ip]),reg);
+    sourceRegister = getRegister(getRMField(memory[reg->ip]),reg);
+    if(LOGGER){
+        printf("->Value %02X was added to register with value %02X\n",*sourceRegister,*destinationRegister);
+    }
     *destinationRegister = *sourceRegister + *destinationRegister;
     reg->ip+=1;
 }
@@ -313,7 +307,7 @@ int execInterrupt(byte *memory,registers* reg){
             if(ch>0x20 && ch<0xff){
                 printf("%c",ch);
             }else{
-                printf(" ");
+                printf("\0");
             }
             color = memory[displayPointer + 2*i+1];
         }
@@ -412,7 +406,7 @@ halfRegister* getRegister(int correctPartOfAddrMode, registers* reg){
         case 4: return &reg->sp;
         case 5: return &reg->bp;
         case 6: return &reg->si;
-        case 7: return &reg->di;
+        case 7: return &reg->bx;
         default:
             printf("Unknown destination register\n");
             exit(-1);

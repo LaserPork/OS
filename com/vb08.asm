@@ -75,8 +75,8 @@ decrypt:
 ;inicializovana data
 keylen db 13
 key1 db 20h, 3ah, 23h, 32h, 0bh, 3dh, 1fh, 13h, 4ch, 19h, 05h, 07h, 07h, 00h
-key2 db 00h, 0ah, 11h, 08h, 03h, 1dh, 1ah, 08h, 04h, 2ch, 3fh, 33h, 1ah, 41h
-key3 db 01h, 00h, 08h, 0bh, 0ch, 07h, 0ah, 05h, 02h, 09h, 06h, 03h, 04h, 00h
+key2 db 00h, 0ah, 11h, 08h, 03h, 1dh, 1ah, 08h, 04h, 2ch, 3fh, 33h, 1ah, 41h  ;hodnota key2 na dalsi pozici pricti k key1
+key3 db 01h, 00h, 08h, 0bh, 0ch, 07h, 0ah, 05h, 02h, 09h, 06h, 03h, 04h, 00h ;pozice key2 
 
 
 code	ends

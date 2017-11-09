@@ -34,7 +34,7 @@
 #define LOGGER 1
 #define displayPointer 0xA000
 #define codeOffset 0x100
-void printReg(registers *regs);
+
 void execAddR8toRM8(byte *memory,registers* reg);
 void execAdd(byte *memory,registers* reg);
 void execXor(byte *memory,registers* reg);

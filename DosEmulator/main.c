@@ -93,9 +93,9 @@ int executeInstructions(registers* dosRegisters, byte *memory){
                     printf("Opcode %02x is not implemeted\n", memory[dosRegisters->ip]);
                     exit(-1);
             }
-            printReg(dosRegisters);
-            printRegisters(dosRegisters);
-            getchar();
+            if(LOGGER){
+                printRegisters(dosRegisters);
+            }
             if(dosRegisters->operandOverride || dosRegisters->segmentOverride || dosRegisters->addressOverride){
                 printf("Instruction did not consume prefix correctly\n");
                 exit(-1);

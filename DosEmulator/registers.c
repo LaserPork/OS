@@ -3,22 +3,28 @@
 #include "memory.h"
 
 void printRegisters(registers* reg){
-    printf("[    E_X    ]\n");
-    printf("[ _X ]       \n");
-    printf("L  H         \n");
+    printf("  [    E_X    ]\n");
+    printf("  [ _X ]       \n");
+    printf("  L  H         \n");
     int i=0;
-    while (i < sizeof(registers))
+    while (i < sizeof(wholeRegister)*4)
     {
+        if(i%2 == 0){
+            printf("  ");
+        }
         printf("%02X ", *((byte *)reg+i));
         i++;
-        if(i == 16) {
-            printf("\n\n");
-        }else if(i%4 == 0){
+        if(i%4 == 0){
             printf("\n");
-        }else if(i%2 == 0){
-            printf(" ");
         }
     }
+    printf("IP: %04X\n", reg->ip);
+    printf("CS: %04X\n", reg->cs);
+    printf("DS: %04X\n", reg->ds);
+    printf("SS: %04X\n", reg->ss);
+    printf("DI: %04X\n", reg->di);
+    printf("SI: %04X\n", reg->si);
+
 
 }
 
