@@ -6,7 +6,7 @@
 #include <string.h>
 
 
-void execAddR8toRM8(byte *memory, registers* reg) {
+int execAddR8toRM8(byte *memory, registers* reg) {
 	halfRegister *destinationRegister, *sourceRegister;
 	if (LOGGER) {
 		printf("AddR8toRM8\n");
@@ -22,8 +22,10 @@ void execAddR8toRM8(byte *memory, registers* reg) {
 		printf("-->Memory[%02X] is now %02X\n", *destinationRegister, memory[*destinationRegister]);
 	}
 	reg->ip++;
+	
+	return 0;
 }
-void execAdd(byte *memory, registers* reg) {
+int execAdd(byte *memory, registers* reg) {
 	halfRegister *destinationRegister, *sourceRegister;
 	if (LOGGER) {
 		printf("Add\n");
@@ -40,8 +42,9 @@ void execAdd(byte *memory, registers* reg) {
 	}
 	*destinationRegister = *sourceRegister + *destinationRegister;
 	reg->ip += 1;
+	return 0;
 }
-void execXor(byte *memory, registers* reg) {
+int execXor(byte *memory, registers* reg) {
 	wholeRegister *destinationRegister, *sourceRegister;
 	if (LOGGER) {
 		printf("Xor\n");
@@ -58,8 +61,10 @@ void execXor(byte *memory, registers* reg) {
 		printf("Xor without operand override index was not implemented");
 		exit(-1);
 	}
+
+	return 0;
 }
-void execIncrementEDX(byte *memory, registers* reg) {
+int execIncrementEDX(byte *memory, registers* reg) {
 	if (LOGGER) {
 		printf("IncrementEDX\n");
 	}
@@ -73,8 +78,9 @@ void execIncrementEDX(byte *memory, registers* reg) {
 	}
 
 	reg->ip++;
+	return 0;
 }
-void execIncrementEBX(byte *memory, registers* reg) {
+int execIncrementEBX(byte *memory, registers* reg) {
 	if (LOGGER) {
 		printf("IncrementEBX\n");
 	}
@@ -87,8 +93,9 @@ void execIncrementEBX(byte *memory, registers* reg) {
 		exit(-1);
 	}
 	reg->ip++;
+	return 0;
 }
-void execDecrementECX(byte *memory, registers* reg) {
+int execDecrementECX(byte *memory, registers* reg) {
 	if (LOGGER) {
 		printf("DecrementECX\n");
 	}
@@ -100,8 +107,9 @@ void execDecrementECX(byte *memory, registers* reg) {
 		reg->cx -= 1;
 	}
 	reg->ip++;
+	return 0;
 }
-void execJumpNotEqual(byte *memory, registers* reg) {
+int execJumpNotEqual(byte *memory, registers* reg) {
 	if (LOGGER) {
 		printf("JumpNotEqual\n");
 	}
@@ -115,14 +123,16 @@ void execJumpNotEqual(byte *memory, registers* reg) {
 		reg->ip += i;
 		reg->ip++;
 	}
+	return 0;
 }
-void execJumpNotParity(byte *memory, registers* reg) {
+int execJumpNotParity(byte *memory, registers* reg) {
 	if (LOGGER) {
 		printf("JumpNotParity\n");
 	}
 	reg->ip++;
+	return 0;
 }
-void execCompare(byte *memory, registers* reg) {
+int execCompare(byte *memory, registers* reg) {
 	halfRegister *destinationRegister;
 	if (LOGGER) {
 		printf("Compare\n");
@@ -142,8 +152,9 @@ void execCompare(byte *memory, registers* reg) {
 		reg->isEqual = 0;
 	}
 	reg->ip += 2;
+	return 0;
 }
-void execMoveToR8(byte *memory, registers* reg) {
+int execMoveToR8(byte *memory, registers* reg) {
 	halfRegister *destinationRegister, addressInMemory, *otherRegister;
 	if (LOGGER) {
 		printf("MoveToR8\n");
@@ -192,9 +203,11 @@ void execMoveToR8(byte *memory, registers* reg) {
 		printf("Unimplemented Addressing mode\n");
 		exit(-1);
 	}
+
+	return 0;
 	/* muze byt jine*/
 }
-void execMoveFromSegment(byte *memory, registers* reg) {
+int execMoveFromSegment(byte *memory, registers* reg) {
 	halfRegister *destinationRegister, *segmentRegister;
 	if (LOGGER) {
 		printf("MoveFromSegment\n");
@@ -210,8 +223,9 @@ void execMoveFromSegment(byte *memory, registers* reg) {
 		exit(-1);
 	}
 	reg->ip += 1;
+	return 0;
 }
-void execMoveToSegment(byte *memory, registers* reg) {
+int execMoveToSegment(byte *memory, registers* reg) {
 	halfRegister *sourceRegister, *segmentRegister;
 	if (LOGGER) {
 		printf("MoveToSegment\n");
@@ -227,56 +241,63 @@ void execMoveToSegment(byte *memory, registers* reg) {
 		exit(-1);
 	}
 	reg->ip += 1;
+	return 0;
 }
-void execMoveAH(byte *memory, registers* reg) {
+int execMoveAH(byte *memory, registers* reg) {
 	if (LOGGER) {
 		printf("MoveAH\n");
 	}
 	reg->ip++;
 	reg->ah = memory[reg->ip];
 	reg->ip++;
+	return 0;
 }
-void execMoveAX(byte *memory, registers* reg) {
+int execMoveAX(byte *memory, registers* reg) {
 	if (LOGGER) {
 		printf("MoveAX\n");
 	}
 	reg->ip++;
 	reg->ax = memory[reg->ip++];
 	reg->ax += memory[reg->ip++] * 0x100;
+	return 0;
 }
-void execMoveDX(byte *memory, registers* reg) {
+int execMoveDX(byte *memory, registers* reg) {
 	if (LOGGER) {
 		printf("MoveDX\n");
 	}
 	reg->ip++;
 	reg->dx = memory[reg->ip++];
 	reg->dx += memory[reg->ip++] * 0x100;
+	return 0;
 }
-void execMoveBX(byte *memory, registers* reg) {
+int execMoveBX(byte *memory, registers* reg) {
 	if (LOGGER) {
 		printf("MoveBX\n");
 	}
 	reg->ip++;
 	reg->bx = memory[reg->ip++];
 	reg->bx += memory[reg->ip++] * 0x100;
+	return 0;
 }
-void execMoveSI(byte *memory, registers* reg) {
+int execMoveSI(byte *memory, registers* reg) {
 	if (LOGGER) {
 		printf("MoveSI\n");
 	}
 	reg->ip++;
 	reg->si = memory[reg->ip++];
 	reg->si += memory[reg->ip++] * 0x100;
+	return 0;
 }
-void execMoveDI(byte *memory, registers* reg) {
+int execMoveDI(byte *memory, registers* reg) {
 	if (LOGGER) {
 		printf("MoveDI\n");
 	}
 	reg->ip++;
 	reg->di = memory[reg->ip++];
 	reg->di += memory[reg->ip++] * 0x100;
+	return 0;
 }
-void execMoveIMM16toRM16(byte *memory, registers* reg) {
+int execMoveIMM16toRM16(byte *memory, registers* reg) {
 	halfRegister *destinationRegister, addressInMemory;
 	byte  value1, value2;
 	if (LOGGER) {
@@ -295,6 +316,7 @@ void execMoveIMM16toRM16(byte *memory, registers* reg) {
 	else {
 		printf("Unimplemeted Addressing mode when writing to memory\n");
 	}
+	return 0;
 }
 int execInterrupt(byte *memory, registers* reg) {
 	reg->ip++;
@@ -365,7 +387,7 @@ int execInterrupt(byte *memory, registers* reg) {
 		return -1;
 	}
 }
-void execJump(byte *memory, registers* reg) {
+int execJump(byte *memory, registers* reg) {
 	if (LOGGER) {
 		printf("Jump\n");
 	}
@@ -375,8 +397,9 @@ void execJump(byte *memory, registers* reg) {
 	reg->ip += i;
 	reg->ip++;
 	/*tady je ten podelany skok o -1, ma sezrat 2 byty ale vysledne jen sebe*/
+	return 0;
 }
-void execIncrement(byte *memory, registers* reg) {
+int execIncrement(byte *memory, registers* reg) {
 	wholeRegister * destinationRegister;
 	if (LOGGER) {
 		printf("Increment\n");
@@ -385,6 +408,7 @@ void execIncrement(byte *memory, registers* reg) {
 	destinationRegister = (wholeRegister*)getRegister(getRMField(memory[reg->ip]), reg);
 	*destinationRegister = *destinationRegister + 1;
 	reg->ip++;
+	return 0;
 }
 
 void printMemory(byte *memory, int memSize) {
@@ -394,6 +418,7 @@ void printMemory(byte *memory, int memSize) {
 		printf("%02X", memory[i]);
 	}
 	printf("\n");
+	return 0;
 }
 
 void printByte(byte b) {
@@ -412,6 +437,7 @@ void printByte(byte b) {
 		}
 	}
 	printf("\n");
+
 }
 
 int getRMField(byte addrMode) {  /*first lower*/

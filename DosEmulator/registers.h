@@ -6,6 +6,7 @@ typedef uint16_t halfRegister, doubleByte;
 typedef uint32_t wholeRegister, quadByte;
 
 
+
 typedef struct {
 	//GENERAL REGISTERS --- celych 32 bitu snad nikndy nebudeme potrebovat -> pouyivat jen AX ne EAX
 	union {
@@ -46,6 +47,12 @@ typedef struct {
 	int addressOverride;
 	int isEqual;
 } registers;
+
+typedef struct {
+	unsigned int decimal_instruction;
+	int(*register_fce) (byte *, registers*);
+} register_functions;
+
 
 void printRegisters(registers* reg);
 void initRegisters(registers* reg);
