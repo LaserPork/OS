@@ -418,7 +418,6 @@ void printMemory(byte *memory, int memSize) {
 		printf("%02X", memory[i]);
 	}
 	printf("\n");
-	return 0;
 }
 
 void printByte(byte b) {

@@ -48,10 +48,7 @@ typedef struct {
 	int isEqual;
 } registers;
 
-typedef struct {
-	unsigned int decimal_instruction;
-	int(*register_fce) (byte *, registers*);
-} register_functions;
+typedef int(*register_fce) (byte *, registers*);
 
 
 void printRegisters(registers* reg);
