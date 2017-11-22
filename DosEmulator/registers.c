@@ -2,12 +2,12 @@
 #include "registers.h"
 #include "memory.h"
 
-void printRegisters(regs_and_flags* reg) {
+void print_registers(regs_and_flags *reg) {
 	printf("  [    E_X    ]\n");
 	printf("  [ _X ]       \n");
 	printf("  L  H         \n");
 	int i = 0;
-	while (i < sizeof(wholeRegister) * 4)
+	while (i < sizeof(whole_register) * 4)
 	{
 		if (i % 2 == 0) {
 			printf("  ");
@@ -28,7 +28,7 @@ void printRegisters(regs_and_flags* reg) {
 
 }
 
-void initRegisters(regs_and_flags* reg) {
+void init_registers(regs_and_flags *reg) {
 	reg->eax = 0x00000000;
 	reg->ebx = 0x00000000;
 	reg->ecx = 0x00000000;
@@ -43,8 +43,8 @@ void initRegisters(regs_and_flags* reg) {
 					  //POINTERS
 	reg->sp = 0x0000; //stack pointer snad nebudeme zasobnik potrebovat
 	reg->bp = 0x0000; //base pointer
-	reg->ip = codeOffset;
-	reg->operandOverride = 0;
-	reg->addressOverride = 0;
-	reg->segmentOverride = 0;
+	reg->ip = code_offset;
+	reg->operand_override = 0;
+	reg->address_override = 0;
+	reg->segment_override = 0;
 }

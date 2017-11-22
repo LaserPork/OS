@@ -12,72 +12,72 @@ void *inicializing_functions(int (*functions[opcode_count])(byte *, regs_and_fla
     for(i = 0; i<opcode_count; i++){
         functions[i] = NULL;
     }
-	functions[addR8toRM8] = execAddR8toRM8;
-	functions[add] = execAdd;
-	functions[xor] = execXor;
-	functions[incrementEDX] = execIncrementEDX;
-	functions[incrementEBX] = execIncrementEBX;
-	functions[decrementECX] = execDecrementECX;
-	functions[jumpNotEqual] = execJumpNotEqual;
-	functions[jumpNotParity] = execJumpNotParity;
-	functions[compare] = execCompare;
-	functions[moveToR8] = execMoveToR8;
-	functions[moveFromSegment] = execMoveFromSegment;
-	functions[moveToSegment] = execMoveToSegment ;
-	functions[moveAH] = execMoveAH;
-	functions[moveAX] = execMoveAX;
-	functions[moveDX] = execMoveDX;
-	functions[moveBX] = execMoveBX;
-	functions[moveSI] = execMoveSI;
-	functions[moveDI] = execMoveDI;
-	functions[moveIMM16toRM16] = execMoveIMM16toRM16;
-	functions[interrupt] = execInterrupt;
-	functions[jump] = execJump;
-	functions[increment] = execIncrement;
+	functions[add_R8_to_RM8] = exec_add_R8_to_RM8;
+	functions[add] = exec_add;
+	functions[xor] = exec_xor;
+	functions[increment_EDX] = exec_increment_EDX;
+	functions[increment_EBX] = exec_increment_EBX;
+	functions[decrement_ECX] = exec_decrement_ECX;
+	functions[jump_not_equal] = exec_jump_not_equal;
+	functions[jump_not_parity] = exec_jump_not_parity;
+	functions[compare] = exec_compare;
+	functions[move_to_R8] = exec_move_to_R8;
+	functions[move_from_segment] = exec_move_from_segment;
+	functions[move_to_segment] = exec_move_to_segment ;
+	functions[move_AH] = exec_move_AH;
+	functions[move_AX] = exec_move_AX;
+	functions[move_DX] = exec_move_DX;
+	functions[move_BX] = exec_move_BX;
+	functions[move_SI] = exec_move_SI;
+	functions[move_DI] = exec_move_DI;
+	functions[move_IMM16_to_RM16] = exec_move_IMM16_to_RM16;
+	functions[interrupt] = exec_interrupt;
+	functions[jump] = exec_jump;
+	functions[increment] = exec_increment;
 }
 
-int executeInstructions(regs_and_flags* dosRegisters, byte *memory) {
-	int returnValue = 0;
+int execute_instructions(regs_and_flags *dos_registers, byte *memory) {
+	int return_value = 0;
     int(*functions[opcode_count]) (byte *, regs_and_flags*);
 	inicializing_functions(functions);
 	while (1) {
 		if (LOGGER) {
-			printf("Opcode: %02x \n", memory[dosRegisters->ip]);
+			printf("Opcode: %02x \n", memory[dos_registers->ip]);
 		}
-		if (memory[dosRegisters->ip] == segmentOverrideValue ||
-			memory[dosRegisters->ip] == operandOverrideValue ||
-			memory[dosRegisters->ip] == addressOverrideValue) {
-			switch (memory[dosRegisters->ip]) {
-                case segmentOverrideValue: dosRegisters->segmentOverride = 1; break;
-                case operandOverrideValue: dosRegisters->operandOverride = 1; break;
-                case addressOverrideValue: dosRegisters->addressOverride = 1; break;
+		if (memory[dos_registers->ip] == segment_override_value ||
+			memory[dos_registers->ip] == operand_override_value ||
+			memory[dos_registers->ip] == address_override_value) {
+			switch (memory[dos_registers->ip]) {
+                case segment_override_value: dos_registers->segment_override = 1; break;
+                case operand_override_value: dos_registers->operand_override = 1; break;
+                case address_override_value: dos_registers->address_override = 1; break;
                 default: break;
 			}
-			dosRegisters->ip++;
+			dos_registers->ip++;
 		}
 		else {
-		    returnValue = functions[(int) memory[dosRegisters->ip]](memory, dosRegisters);
+		    return_value = functions[(int) memory[dos_registers->ip]](memory, dos_registers);
 			if (LOGGER) {
-				printRegisters(dosRegisters);
+				print_registers(dos_registers);
 			}
-			if (dosRegisters->operandOverride || dosRegisters->segmentOverride || dosRegisters->addressOverride) {
+			if (dos_registers->operand_override || dos_registers->segment_override || dos_registers->address_override) {
 				printf("Instruction did not consume prefix correctly\n");
 				exit(-1);
 			}
-			if (returnValue == 20) {
+			if (return_value == 20) {
 				return 0;
 			}
 
 		}
 	}
 }
-int loadFileintoMemory(byte *memory) {
-	FILE *filePointer;
+int load_file_into_memory(byte *memory) {
+	FILE *file_pointer;
 	char *filename = "VB08.COM";
-    filePointer = fopen(filename, "rb");
-	//fopen_s(&filePointer,filename, "rb");
+    //file_pointer = fopen(filename, "rb");
+	fopen_s(&file_pointer,filename, "rb");
 
-	int c, memSize = 0;
+	int c, mem_size = 0;
 
 	if (memory == NULL)
 	{
@@ -85,7 +85,7 @@ int loadFileintoMemory(byte *memory) {
 		return(-1);
 	}
 	
-	if (filePointer == NULL)
+	if (file_pointer == NULL)
 	{
 		printf("File could not be opened.\n");
 		return -1;
@@ -93,13 +93,13 @@ int loadFileintoMemory(byte *memory) {
 	
 		
 
-	while ((c = fgetc(filePointer)) != EOF)
+	while ((c = fgetc(file_pointer)) != EOF)
 	{
-		memory[0x100 + memSize++] = (byte)c;
+		memory[0x100 + mem_size++] = (byte)c;
 	}
 
 	if (LOGGER) {
-		printMemory(memory, memSize);
+        print_memory(memory, mem_size);
 	}
 
 	
@@ -110,18 +110,18 @@ int loadFileintoMemory(byte *memory) {
 
 
 int main() {
-	regs_and_flags *dosRegisters;
+	regs_and_flags *dos_registers;
 	byte *memory;
-	dosRegisters = malloc(sizeof(regs_and_flags));
+	dos_registers = malloc(sizeof(regs_and_flags));
 	memory = malloc((int)pow(2, 16) * sizeof(byte));
-	initRegisters(dosRegisters);
-	if(loadFileintoMemory(memory)){
-        free(dosRegisters);
+	init_registers(dos_registers);
+	if(load_file_into_memory(memory)){
+        free(dos_registers);
         free(memory);
         return -1;
     };
-    if(executeInstructions(dosRegisters, memory)){
-        free(dosRegisters);
+    if(execute_instructions(dos_registers, memory)){
+        free(dos_registers);
         free(memory);
         return -1;
     };

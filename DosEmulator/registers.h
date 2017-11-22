@@ -2,8 +2,8 @@
 #ifndef registers_h
 #define registers_h
 typedef uint8_t byte;
-typedef uint16_t halfRegister, doubleByte;
-typedef uint32_t wholeRegister, quadByte;
+typedef uint16_t half_register;
+typedef uint32_t whole_register;
 
 
 
@@ -11,45 +11,45 @@ typedef struct {
 	//GENERAL REGISTERS --- celych 32 bitu snad nikndy nebudeme potrebovat -> pouyivat jen AX ne EAX
 	union {
 		struct { byte al; byte ah; };
-		halfRegister ax;
-		wholeRegister eax;
+		half_register ax;
+		whole_register eax;
 	};
 	union {
 		struct { byte bl; byte bh; };
-		halfRegister bx;
-		wholeRegister ebx;
+		half_register bx;
+		whole_register ebx;
 	};
 	union {
 		struct { byte cl; byte ch; };
-		halfRegister cx;
-		wholeRegister ecx;
+		half_register cx;
+		whole_register ecx;
 	};
 	union {
 		struct { byte dl; byte dh; };
-		halfRegister dx;
-		wholeRegister edx;
+		half_register dx;
+		whole_register edx;
 	};
 	//SEGMENT REGISTERS
-	halfRegister cs; //code segment
-	halfRegister ds; //data segment
-	halfRegister ss; //stack segment
-	halfRegister es; //extra segment
+	half_register cs; //code segment
+	half_register ds; //data segment
+	half_register ss; //stack segment
+	half_register es; //extra segment
 					 //INDEX REGISTERS
-	halfRegister di; //destination index
-	halfRegister si; //stack index snad nebudeme zasobnik potrebovat
+	half_register di; //destination index
+	half_register si; //stack index snad nebudeme zasobnik potrebovat
 					 //POINTERS
-	halfRegister sp; //stack pointer snad nebudeme zasobnik potrebovat
-	halfRegister bp; //base pointer
-	halfRegister ip; //instruciton pointer
+	half_register sp; //stack pointer snad nebudeme zasobnik potrebovat
+	half_register bp; //base pointer
+	half_register ip; //instruciton pointer
 
-	int segmentOverride;
-	int operandOverride;
-	int addressOverride;
-	int isEqual;
+	int segment_override;
+	int operand_override;
+	int address_override;
+	int is_equal;
 } regs_and_flags;
 
 
-void printRegisters(regs_and_flags* reg);
-void initRegisters(regs_and_flags* reg);
+void print_registers(regs_and_flags *reg);
+void init_registers(regs_and_flags *reg);
 
 #endif
