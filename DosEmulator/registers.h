@@ -46,12 +46,10 @@ typedef struct {
 	int operandOverride;
 	int addressOverride;
 	int isEqual;
-} registers;
-
-typedef int(*register_fce) (byte *, registers*);
+} regs_and_flags;
 
 
-void printRegisters(registers* reg);
-void initRegisters(registers* reg);
+void printRegisters(regs_and_flags* reg);
+void initRegisters(regs_and_flags* reg);
 
 #endif

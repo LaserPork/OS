@@ -7,41 +7,39 @@
 #include <process.h>
 
 
-register_fce *inicializing_register_functions(void) {
-
-	static register_fce registers_array[256];
-	
-	registers_array[0] = execAddR8toRM8;
-	registers_array[3] = execAdd;
-	registers_array[51] = execXor;
-	registers_array[66] = execIncrementEDX;
-	registers_array[67] = execIncrementEBX;
-	registers_array[73] = execDecrementECX;
-	registers_array[117] = execJumpNotEqual;
-	registers_array[123] = execJumpNotParity;
-	registers_array[131] = execCompare;
-	registers_array[138] = execMoveToR8;
-	registers_array[140] = execMoveFromSegment;
-	registers_array[142] = execMoveToSegment ;
-	registers_array[180] =execMoveAH;
-	registers_array[184] = execMoveAX;
-	registers_array[186] = execMoveDX;
-	registers_array[187] = execMoveBX;
-	registers_array[190] = execMoveSI;
-	registers_array[191] = execMoveDI;
-	registers_array[199] = execMoveIMM16toRM16;
-	registers_array[205] = execInterrupt;
-	registers_array[235] = execJump;
-	registers_array[255] = execIncrement;
-
-	return registers_array;
+void *inicializing_functions(int (*functions[opcode_count])(byte *, regs_and_flags*)) {
+    int i;
+    for(i = 0; i<opcode_count; i++){
+        functions[i] = NULL;
+    }
+	functions[addR8toRM8] = execAddR8toRM8;
+	functions[add] = execAdd;
+	functions[xor] = execXor;
+	functions[incrementEDX] = execIncrementEDX;
+	functions[incrementEBX] = execIncrementEBX;
+	functions[decrementECX] = execDecrementECX;
+	functions[jumpNotEqual] = execJumpNotEqual;
+	functions[jumpNotParity] = execJumpNotParity;
+	functions[compare] = execCompare;
+	functions[moveToR8] = execMoveToR8;
+	functions[moveFromSegment] = execMoveFromSegment;
+	functions[moveToSegment] = execMoveToSegment ;
+	functions[moveAH] = execMoveAH;
+	functions[moveAX] = execMoveAX;
+	functions[moveDX] = execMoveDX;
+	functions[moveBX] = execMoveBX;
+	functions[moveSI] = execMoveSI;
+	functions[moveDI] = execMoveDI;
+	functions[moveIMM16toRM16] = execMoveIMM16toRM16;
+	functions[interrupt] = execInterrupt;
+	functions[jump] = execJump;
+	functions[increment] = execIncrement;
 }
 
-int executeInstructions(registers* dosRegisters, byte *memory) {
+int executeInstructions(regs_and_flags* dosRegisters, byte *memory) {
 	int returnValue = 0;
-	register_fce *functions;
-	functions = inicializing_register_functions();
-
+    int(*functions[opcode_count]) (byte *, regs_and_flags*);
+	inicializing_functions(functions);
 	while (1) {
 		if (LOGGER) {
 			printf("Opcode: %02x \n", memory[dosRegisters->ip]);
@@ -50,20 +48,15 @@ int executeInstructions(registers* dosRegisters, byte *memory) {
 			memory[dosRegisters->ip] == operandOverrideValue ||
 			memory[dosRegisters->ip] == addressOverrideValue) {
 			switch (memory[dosRegisters->ip]) {
-			case segmentOverrideValue: dosRegisters->segmentOverride = 1; break;
-			case operandOverrideValue: dosRegisters->operandOverride = 1; break;
-			case addressOverrideValue: dosRegisters->addressOverride = 1; break;
-			default: break;
+                case segmentOverrideValue: dosRegisters->segmentOverride = 1; break;
+                case operandOverrideValue: dosRegisters->operandOverride = 1; break;
+                case addressOverrideValue: dosRegisters->addressOverride = 1; break;
+                default: break;
 			}
 			dosRegisters->ip++;
 		}
 		else {
-
-			
-		returnValue = functions[(int) memory[dosRegisters->ip]](memory, dosRegisters);
-			
-
-
+		    returnValue = functions[(int) memory[dosRegisters->ip]](memory, dosRegisters);
 			if (LOGGER) {
 				printRegisters(dosRegisters);
 			}
@@ -81,7 +74,8 @@ int executeInstructions(registers* dosRegisters, byte *memory) {
 int loadFileintoMemory(byte *memory) {
 	FILE *filePointer;
 	char *filename = "VB08.COM";
-	fopen_s(&filePointer,filename, "rb");
+    filePointer = fopen(filename, "rb");
+	//fopen_s(&filePointer,filename, "rb");
 
 	int c, memSize = 0;
 
@@ -109,19 +103,27 @@ int loadFileintoMemory(byte *memory) {
 	}
 
 	
-	return -2;
+	return 0;
 
 
 }
 
 
 int main() {
-	registers *dosRegisters;
+	regs_and_flags *dosRegisters;
 	byte *memory;
-	dosRegisters = malloc(sizeof(registers));
+	dosRegisters = malloc(sizeof(regs_and_flags));
 	memory = malloc((int)pow(2, 16) * sizeof(byte));
 	initRegisters(dosRegisters);
-	loadFileintoMemory(memory);
-	executeInstructions(dosRegisters, memory);
+	if(loadFileintoMemory(memory)){
+        free(dosRegisters);
+        free(memory);
+        return -1;
+    };
+    if(executeInstructions(dosRegisters, memory)){
+        free(dosRegisters);
+        free(memory);
+        return -1;
+    };
 	return 0;
 }

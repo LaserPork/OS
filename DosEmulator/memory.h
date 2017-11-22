@@ -31,32 +31,34 @@
 #define jump 0xEB
 #define increment 0xFF
 
+#define opcode_count 0x100
+
 #define LOGGER 0
 #define displayPointer /*0xA000*/ 0xB800
 #define codeOffset 0x100
 
-int execAddR8toRM8(byte *memory, registers* reg);
-int execAdd(byte *memory, registers* reg);
-int execXor(byte *memory, registers* reg);
-int execIncrementEDX(byte *memory, registers* reg);
-int execIncrementEBX(byte *memory, registers* reg);
-int execDecrementECX(byte *memory, registers* reg);
-int execJumpNotEqual(byte *memory, registers* reg);
-int execJumpNotParity(byte *memory, registers* reg);
-int execCompare(byte *memory, registers* reg);
-int execMoveToR8(byte *memory, registers* reg);
-int execMoveFromSegment(byte *memory, registers* reg);
-int execMoveToSegment(byte *memory, registers* reg);
-int execMoveAH(byte *memory, registers* reg);
-int execMoveAX(byte *memory, registers* reg);
-int execMoveDX(byte *memory, registers* reg);
-int execMoveBX(byte *memory, registers* reg);
-int execMoveSI(byte *memory, registers* reg);
-int execMoveDI(byte *memory, registers* reg);
-int execMoveIMM16toRM16(byte *memory, registers* reg);
-int execInterrupt(byte *memory, registers* reg);
-int execJump(byte *memory, registers* reg);
-int execIncrement(byte *memory, registers* reg);
+int execAddR8toRM8(byte *memory, regs_and_flags* reg);
+int execAdd(byte *memory, regs_and_flags* reg);
+int execXor(byte *memory, regs_and_flags* reg);
+int execIncrementEDX(byte *memory, regs_and_flags* reg);
+int execIncrementEBX(byte *memory, regs_and_flags* reg);
+int execDecrementECX(byte *memory, regs_and_flags* reg);
+int execJumpNotEqual(byte *memory, regs_and_flags* reg);
+int execJumpNotParity(byte *memory, regs_and_flags* reg);
+int execCompare(byte *memory, regs_and_flags* reg);
+int execMoveToR8(byte *memory, regs_and_flags* reg);
+int execMoveFromSegment(byte *memory, regs_and_flags* reg);
+int execMoveToSegment(byte *memory, regs_and_flags* reg);
+int execMoveAH(byte *memory, regs_and_flags* reg);
+int execMoveAX(byte *memory, regs_and_flags* reg);
+int execMoveDX(byte *memory, regs_and_flags* reg);
+int execMoveBX(byte *memory, regs_and_flags* reg);
+int execMoveSI(byte *memory, regs_and_flags* reg);
+int execMoveDI(byte *memory, regs_and_flags* reg);
+int execMoveIMM16toRM16(byte *memory, regs_and_flags* reg);
+int execInterrupt(byte *memory, regs_and_flags* reg);
+int execJump(byte *memory, regs_and_flags* reg);
+int execIncrement(byte *memory, regs_and_flags* reg);
 
 
 
@@ -67,6 +69,6 @@ int getRMField(byte addrMode);
 int getAdressingMode(byte addrMode);
 int getModifier(byte addrMode);
 
-halfRegister* getRegister(int correctPartOfAddrMode, registers* reg);
-halfRegister* getSegment(int correctPartOfAddrMode, registers* reg);
+halfRegister* getRegister(int correctPartOfAddrMode, regs_and_flags* reg);
+halfRegister* getSegment(int correctPartOfAddrMode, regs_and_flags* reg);
 #endif

@@ -2,7 +2,7 @@
 #include "registers.h"
 #include "memory.h"
 
-void printRegisters(registers* reg) {
+void printRegisters(regs_and_flags* reg) {
 	printf("  [    E_X    ]\n");
 	printf("  [ _X ]       \n");
 	printf("  L  H         \n");
@@ -28,11 +28,11 @@ void printRegisters(registers* reg) {
 
 }
 
-void initRegisters(registers* reg) {
-	reg->eax = 0xFFFFFFFF;
-	reg->ebx = 0xFFFFFFFF;
-	reg->ecx = 0xFFFFFFFF;
-	reg->edx = 0xFFFFFFFF;
+void initRegisters(regs_and_flags* reg) {
+	reg->eax = 0x00000000;
+	reg->ebx = 0x00000000;
+	reg->ecx = 0x00000000;
+	reg->edx = 0x00000000;
 	reg->cs = 0x0000;//code segment
 	reg->ds = 0x0000; //data segment
 	reg->ss = 0x0000; //stack segment

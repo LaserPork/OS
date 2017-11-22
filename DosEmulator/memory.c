@@ -6,7 +6,7 @@
 #include <string.h>
 
 
-int execAddR8toRM8(byte *memory, registers* reg) {
+int execAddR8toRM8(byte *memory, regs_and_flags* reg) {
 	halfRegister *destinationRegister, *sourceRegister;
 	if (LOGGER) {
 		printf("AddR8toRM8\n");
@@ -25,7 +25,7 @@ int execAddR8toRM8(byte *memory, registers* reg) {
 	
 	return 0;
 }
-int execAdd(byte *memory, registers* reg) {
+int execAdd(byte *memory, regs_and_flags* reg) {
 	halfRegister *destinationRegister, *sourceRegister;
 	if (LOGGER) {
 		printf("Add\n");
@@ -44,7 +44,7 @@ int execAdd(byte *memory, registers* reg) {
 	reg->ip += 1;
 	return 0;
 }
-int execXor(byte *memory, registers* reg) {
+int execXor(byte *memory, regs_and_flags* reg) {
 	wholeRegister *destinationRegister, *sourceRegister;
 	if (LOGGER) {
 		printf("Xor\n");
@@ -64,7 +64,7 @@ int execXor(byte *memory, registers* reg) {
 
 	return 0;
 }
-int execIncrementEDX(byte *memory, registers* reg) {
+int execIncrementEDX(byte *memory, regs_and_flags* reg) {
 	if (LOGGER) {
 		printf("IncrementEDX\n");
 	}
@@ -80,7 +80,7 @@ int execIncrementEDX(byte *memory, registers* reg) {
 	reg->ip++;
 	return 0;
 }
-int execIncrementEBX(byte *memory, registers* reg) {
+int execIncrementEBX(byte *memory, regs_and_flags* reg) {
 	if (LOGGER) {
 		printf("IncrementEBX\n");
 	}
@@ -95,7 +95,7 @@ int execIncrementEBX(byte *memory, registers* reg) {
 	reg->ip++;
 	return 0;
 }
-int execDecrementECX(byte *memory, registers* reg) {
+int execDecrementECX(byte *memory, regs_and_flags* reg) {
 	if (LOGGER) {
 		printf("DecrementECX\n");
 	}
@@ -109,7 +109,7 @@ int execDecrementECX(byte *memory, registers* reg) {
 	reg->ip++;
 	return 0;
 }
-int execJumpNotEqual(byte *memory, registers* reg) {
+int execJumpNotEqual(byte *memory, regs_and_flags* reg) {
 	if (LOGGER) {
 		printf("JumpNotEqual\n");
 	}
@@ -125,14 +125,14 @@ int execJumpNotEqual(byte *memory, registers* reg) {
 	}
 	return 0;
 }
-int execJumpNotParity(byte *memory, registers* reg) {
+int execJumpNotParity(byte *memory, regs_and_flags* reg) {
 	if (LOGGER) {
 		printf("JumpNotParity\n");
 	}
 	reg->ip++;
 	return 0;
 }
-int execCompare(byte *memory, registers* reg) {
+int execCompare(byte *memory, regs_and_flags* reg) {
 	halfRegister *destinationRegister;
 	if (LOGGER) {
 		printf("Compare\n");
@@ -154,7 +154,7 @@ int execCompare(byte *memory, registers* reg) {
 	reg->ip += 2;
 	return 0;
 }
-int execMoveToR8(byte *memory, registers* reg) {
+int execMoveToR8(byte *memory, regs_and_flags* reg) {
 	halfRegister *destinationRegister, addressInMemory, *otherRegister;
 	if (LOGGER) {
 		printf("MoveToR8\n");
@@ -207,7 +207,7 @@ int execMoveToR8(byte *memory, registers* reg) {
 	return 0;
 	/* muze byt jine*/
 }
-int execMoveFromSegment(byte *memory, registers* reg) {
+int execMoveFromSegment(byte *memory, regs_and_flags* reg) {
 	halfRegister *destinationRegister, *segmentRegister;
 	if (LOGGER) {
 		printf("MoveFromSegment\n");
@@ -225,7 +225,7 @@ int execMoveFromSegment(byte *memory, registers* reg) {
 	reg->ip += 1;
 	return 0;
 }
-int execMoveToSegment(byte *memory, registers* reg) {
+int execMoveToSegment(byte *memory, regs_and_flags* reg) {
 	halfRegister *sourceRegister, *segmentRegister;
 	if (LOGGER) {
 		printf("MoveToSegment\n");
@@ -243,7 +243,7 @@ int execMoveToSegment(byte *memory, registers* reg) {
 	reg->ip += 1;
 	return 0;
 }
-int execMoveAH(byte *memory, registers* reg) {
+int execMoveAH(byte *memory, regs_and_flags* reg) {
 	if (LOGGER) {
 		printf("MoveAH\n");
 	}
@@ -252,7 +252,7 @@ int execMoveAH(byte *memory, registers* reg) {
 	reg->ip++;
 	return 0;
 }
-int execMoveAX(byte *memory, registers* reg) {
+int execMoveAX(byte *memory, regs_and_flags* reg) {
 	if (LOGGER) {
 		printf("MoveAX\n");
 	}
@@ -261,7 +261,7 @@ int execMoveAX(byte *memory, registers* reg) {
 	reg->ax += memory[reg->ip++] * 0x100;
 	return 0;
 }
-int execMoveDX(byte *memory, registers* reg) {
+int execMoveDX(byte *memory, regs_and_flags* reg) {
 	if (LOGGER) {
 		printf("MoveDX\n");
 	}
@@ -270,7 +270,7 @@ int execMoveDX(byte *memory, registers* reg) {
 	reg->dx += memory[reg->ip++] * 0x100;
 	return 0;
 }
-int execMoveBX(byte *memory, registers* reg) {
+int execMoveBX(byte *memory, regs_and_flags* reg) {
 	if (LOGGER) {
 		printf("MoveBX\n");
 	}
@@ -279,7 +279,7 @@ int execMoveBX(byte *memory, registers* reg) {
 	reg->bx += memory[reg->ip++] * 0x100;
 	return 0;
 }
-int execMoveSI(byte *memory, registers* reg) {
+int execMoveSI(byte *memory, regs_and_flags* reg) {
 	if (LOGGER) {
 		printf("MoveSI\n");
 	}
@@ -288,7 +288,7 @@ int execMoveSI(byte *memory, registers* reg) {
 	reg->si += memory[reg->ip++] * 0x100;
 	return 0;
 }
-int execMoveDI(byte *memory, registers* reg) {
+int execMoveDI(byte *memory, regs_and_flags* reg) {
 	if (LOGGER) {
 		printf("MoveDI\n");
 	}
@@ -297,7 +297,7 @@ int execMoveDI(byte *memory, registers* reg) {
 	reg->di += memory[reg->ip++] * 0x100;
 	return 0;
 }
-int execMoveIMM16toRM16(byte *memory, registers* reg) {
+int execMoveIMM16toRM16(byte *memory, regs_and_flags* reg) {
 	halfRegister *destinationRegister, addressInMemory;
 	byte  value1, value2;
 	if (LOGGER) {
@@ -318,7 +318,7 @@ int execMoveIMM16toRM16(byte *memory, registers* reg) {
 	}
 	return 0;
 }
-int execInterrupt(byte *memory, registers* reg) {
+int execInterrupt(byte *memory, regs_and_flags* reg) {
 	reg->ip++;
 	if (LOGGER) {
 		printf("Interrupt\n");
@@ -387,7 +387,7 @@ int execInterrupt(byte *memory, registers* reg) {
 		return -1;
 	}
 }
-int execJump(byte *memory, registers* reg) {
+int execJump(byte *memory, regs_and_flags* reg) {
 	if (LOGGER) {
 		printf("Jump\n");
 	}
@@ -399,7 +399,7 @@ int execJump(byte *memory, registers* reg) {
 	/*tady je ten podelany skok o -1, ma sezrat 2 byty ale vysledne jen sebe*/
 	return 0;
 }
-int execIncrement(byte *memory, registers* reg) {
+int execIncrement(byte *memory, regs_and_flags* reg) {
 	wholeRegister * destinationRegister;
 	if (LOGGER) {
 		printf("Increment\n");
@@ -451,7 +451,7 @@ int getModifier(byte addrMode) {
 	return (addrMode >> 3) & 7;
 }
 
-halfRegister* getRegister(int correctPartOfAddrMode, registers* reg) {
+halfRegister* getRegister(int correctPartOfAddrMode, regs_and_flags* reg) {
 	switch (correctPartOfAddrMode)
 	{
 	case 0: return &reg->ax;
@@ -469,7 +469,7 @@ halfRegister* getRegister(int correctPartOfAddrMode, registers* reg) {
 
 }
 
-halfRegister* getSegment(int correctPartOfAddrMode, registers* reg) {
+halfRegister* getSegment(int correctPartOfAddrMode, regs_and_flags* reg) {
 	switch (correctPartOfAddrMode)
 	{
 	case 0: return &reg->es;
