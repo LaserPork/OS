@@ -87,8 +87,9 @@ int load_file_into_memory(byte *memory) {
 	int c, mem_size = 0;
 	FILE *file_pointer;
 	char *filename = "VB08.COM";
-    file_pointer = fopen(filename, "rb");
-	//fopen_s(&file_pointer,filename, "rb");
+    /*	pro preklad s gcc
+     * file_pointer = fopen(filename, "rb");*/
+	fopen_s(&file_pointer,filename, "rb");
 
 	if (memory == NULL)
 	{
