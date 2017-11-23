@@ -35,7 +35,10 @@ void inicializing_functions(int (*functions[opcode_count])(byte *, regs_and_flag
 	functions[jump] = exec_jump;
 	functions[increment] = exec_increment;
 }
-
+/*
+ * Spusti provadeni instrukci nactenych v memory od pozice ip
+ * pamet musi obsahovat interrupt 20 pro ukonceni behu
+ * */
 int execute_instructions(regs_and_flags *dos_registers, byte *memory) {
 	int return_value = 0;
     int(*functions[opcode_count]) (byte *, regs_and_flags*);
@@ -44,6 +47,9 @@ int execute_instructions(regs_and_flags *dos_registers, byte *memory) {
 		if (LOGGER) {
 			printf("Opcode: %02x \n", memory[dos_registers->ip]);
 		}
+		/*
+		 * Pokud se jedna o prefix, nastavi flag a pokracuje dalsim opcodem
+		 * */
 		if (memory[dos_registers->ip] == segment_override_value ||
 			memory[dos_registers->ip] == operand_override_value ||
 			memory[dos_registers->ip] == address_override_value) {
@@ -55,7 +61,13 @@ int execute_instructions(regs_and_flags *dos_registers, byte *memory) {
 			}
 			dos_registers->ip++;
 		}
+			/*
+			 * Pokud opcode neodpovida prefixu zavola se prislusna funkce
+			 * */
 		else {
+			/*
+			 * Spousteni jednotlivych funkci pres tabulku ukazatelu na funkce
+			 * */
 		    return_value = functions[(int) memory[dos_registers->ip]](memory, dos_registers);
 			if (LOGGER) {
 				print_registers(dos_registers);

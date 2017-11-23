@@ -2,6 +2,9 @@
 #include "registers.h"
 #include "memory.h"
 
+/*
+ * Tiskne stav registru, vyuziti pri debugovani
+ * */
 void print_registers(regs_and_flags *reg) {
 	printf("  [    E_X    ]\n");
 	printf("  [ _X ]       \n");
@@ -27,7 +30,9 @@ void print_registers(regs_and_flags *reg) {
 
 
 }
-
+/*
+ * Pocatecni inicializace registru a flagu
+ * */
 void init_registers(regs_and_flags *reg) {
 	reg->eax = 0x00000000;
 	reg->ebx = 0x00000000;

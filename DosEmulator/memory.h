@@ -60,7 +60,7 @@ int exec_interrupt(byte *memory, regs_and_flags *reg);
 int exec_jump(byte *memory, regs_and_flags *reg);
 int exec_increment(byte *memory, regs_and_flags *reg);
 
-
+void inicializing_functions(int (*functions[opcode_count])(byte *, regs_and_flags*));
 
 void print_memory(byte *memory, int memSize);
 void print_byte(byte b);

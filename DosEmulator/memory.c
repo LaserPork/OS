@@ -448,7 +448,7 @@ half_register* get_register(int correct_part_of_addr_mode, regs_and_flags *reg) 
 	case 4: return &reg->sp;
 	case 5: return &reg->bp;
 	case 6: return &reg->si;
-	case 7: return &reg->bx; /*to tady je protoze kdyz ho chci tak jsem v 16 bit modu*/
+	case 7: return &reg->bx;
 	default:
 		printf("Unknown destination register\n");
 		exit(-1);

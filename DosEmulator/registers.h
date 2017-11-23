@@ -6,9 +6,8 @@ typedef uint16_t half_register;
 typedef uint32_t whole_register;
 
 
-
 typedef struct {
-	//GENERAL REGISTERS --- celych 32 bitu snad nikndy nebudeme potrebovat -> pouyivat jen AX ne EAX
+	//GENERAL REGISTERS
 	union {
 		struct { byte al; byte ah; };
 		half_register ax;
@@ -36,15 +35,16 @@ typedef struct {
 	half_register es; //extra segment
 					 //INDEX REGISTERS
 	half_register di; //destination index
-	half_register si; //stack index snad nebudeme zasobnik potrebovat
+	half_register si; //stack index
 					 //POINTERS
-	half_register sp; //stack pointer snad nebudeme zasobnik potrebovat
+	half_register sp; //stack pointer
 	half_register bp; //base pointer
 	half_register ip; //instruciton pointer
-
+    /*flags for prefixes*/
 	int segment_override;
 	int operand_override;
 	int address_override;
+    /*equlity flag*/
 	int is_equal;
 } regs_and_flags;
 
