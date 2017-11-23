@@ -7,7 +7,7 @@
 #include <process.h>
 
 
-void *inicializing_functions(int (*functions[opcode_count])(byte *, regs_and_flags*)) {
+void inicializing_functions(int (*functions[opcode_count])(byte *, regs_and_flags*)) {
     int i;
     for(i = 0; i<opcode_count; i++){
         functions[i] = NULL;
@@ -72,12 +72,11 @@ int execute_instructions(regs_and_flags *dos_registers, byte *memory) {
 	}
 }
 int load_file_into_memory(byte *memory) {
+	int c, mem_size = 0;
 	FILE *file_pointer;
 	char *filename = "VB08.COM";
-    //file_pointer = fopen(filename, "rb");
-	fopen_s(&file_pointer,filename, "rb");
-
-	int c, mem_size = 0;
+    file_pointer = fopen(filename, "rb");
+	//fopen_s(&file_pointer,filename, "rb");
 
 	if (memory == NULL)
 	{
@@ -90,12 +89,10 @@ int load_file_into_memory(byte *memory) {
 		printf("File could not be opened.\n");
 		return -1;
 	}
-	
-		
 
 	while ((c = fgetc(file_pointer)) != EOF)
 	{
-		memory[0x100 + mem_size++] = (byte)c;
+		memory[code_offset + mem_size++] = (byte)c;
 	}
 
 	if (LOGGER) {
