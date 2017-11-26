@@ -1,0 +1,17 @@
+\select@language {czech}
+\contentsline {section}{\numberline {1}Zad\IeC {\'a}n\IeC {\'\i }}{1}{section.1}
+\contentsline {subsection}{\numberline {1.1}P\IeC {\v r}esn\IeC {\'e} zn\IeC {\v e}n\IeC {\'\i } zad\IeC {\'a}n\IeC {\'\i }}{1}{subsection.1.1}
+\contentsline {section}{\numberline {2}Zpracov\IeC {\'a}n\IeC {\'\i }}{1}{section.2}
+\contentsline {subsection}{\numberline {2.1}Registry}{1}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}Union}{2}{subsubsection.2.1.1}
+\contentsline {subsection}{\numberline {2.2}Pam\IeC {\v e}\IeC {\v t}}{2}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Na\IeC {\v c}ten\IeC {\'\i } souboru}{2}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Opk\IeC {\'o}dy}{3}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Instrukce}{3}{subsection.2.5}
+\contentsline {subsection}{\numberline {2.6}Prefixy}{4}{subsection.2.6}
+\contentsline {subsection}{\numberline {2.7}Implementace instrukc\IeC {\'\i }}{4}{subsection.2.7}
+\contentsline {subsubsection}{\numberline {2.7.1}Skok -1}{4}{subsubsection.2.7.1}
+\contentsline {subsubsection}{\numberline {2.7.2}P\IeC {\v r}\IeC {\'\i }m\IeC {\'y} z\IeC {\'a}pis do grafick\IeC {\'e}ho bufferu}{5}{subsubsection.2.7.2}
+\contentsline {subsubsection}{\numberline {2.7.3}P\IeC {\v r}eru\IeC {\v s}en\IeC {\'\i }}{5}{subsubsection.2.7.3}
+\contentsline {section}{\numberline {3}Dokumentace}{5}{section.3}
+\contentsline {section}{\numberline {4}Z\IeC {\'a}v\IeC {\v e}r}{6}{section.4}
